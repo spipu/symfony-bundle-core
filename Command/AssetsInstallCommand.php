@@ -84,7 +84,7 @@ directory (e.g. the <comment>public</comment> directory).
     {
         $sfIo = new SymfonyStyle($input, $output);
         $sfIo->newLine();
-        $sfIo->text('Adding Spipu Ui assets as <info>hard copies</info>.');
+        $sfIo->text('Adding Spipu Core assets as <info>hard copies</info>.');
 
         $this->assets->setTargetDir($input->getArgument('target'));
         $this->assets->installAssets($sfIo);

@@ -245,7 +245,7 @@ class Assets
 
         $libDir = $this->targetDir . $asset->getCode() . DIRECTORY_SEPARATOR;
 
-        $zipFilename = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'spipu_ui_asset_' . $asset->getCode();
+        $zipFilename = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'spipu_core_asset_' . $asset->getCode();
         $zipFolder = $zipFilename.'.extract';
 
         try {

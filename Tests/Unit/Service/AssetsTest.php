@@ -455,7 +455,7 @@ class AssetsTest extends TestCase
             ->willReturnMap(
                 [
                     ['my_public', true],
-                    ['/tmp/spipu_ui_asset_aaa.extract', false],
+                    ['/tmp/spipu_core_asset_aaa.extract', false],
                 ]
             );
 
@@ -463,13 +463,13 @@ class AssetsTest extends TestCase
             ->method('isFile')
             ->willReturnMap(
                 [
-                    ['/tmp/spipu_ui_asset_aaa', true],
+                    ['/tmp/spipu_core_asset_aaa', true],
                 ]
             );
 
         $filesystem
             ->method('unZip')
-            ->with('/tmp/spipu_ui_asset_aaa', '/tmp/spipu_ui_asset_aaa.extract')
+            ->with('/tmp/spipu_core_asset_aaa', '/tmp/spipu_core_asset_aaa.extract')
             ->willReturn(false);
 
         $service = new Assets($filesystem, $finderFactory, $list, '/mock/project');
@@ -496,8 +496,8 @@ class AssetsTest extends TestCase
             ->willReturnMap(
                 [
                     ['my_public', true],
-                    ['/tmp/spipu_ui_asset_aaa.extract', true],
-                    ['/tmp/spipu_ui_asset_aaa.extract/my-file.js', false],
+                    ['/tmp/spipu_core_asset_aaa.extract', true],
+                    ['/tmp/spipu_core_asset_aaa.extract/my-file.js', false],
                 ]
             );
 
@@ -505,14 +505,14 @@ class AssetsTest extends TestCase
             ->method('isFile')
             ->willReturnMap(
                 [
-                    ['/tmp/spipu_ui_asset_aaa', true],
-                    ['/tmp/spipu_ui_asset_aaa.extract/my-file.js', true],
+                    ['/tmp/spipu_core_asset_aaa', true],
+                    ['/tmp/spipu_core_asset_aaa.extract/my-file.js', true],
                 ]
             );
 
         $filesystem
             ->method('unZip')
-            ->with('/tmp/spipu_ui_asset_aaa', '/tmp/spipu_ui_asset_aaa.extract')
+            ->with('/tmp/spipu_core_asset_aaa', '/tmp/spipu_core_asset_aaa.extract')
             ->willReturn(true);
 
         $service = new Assets($filesystem, $finderFactory, $list, '/mock/project');
