@@ -1,0 +1,7 @@
+spipu:
+    core:
+        role:
+            user:        "Default User"
+            admin:       "Default Admin"
+            super_admin: "Super Administrator"
+

@@ -1,0 +1,22 @@
+{
+    "name": "spipu/core-bundle",
+    "type": "symfony-bundle",
+    "description": "Spipu Core Bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Laurent Minguet",
+            "email": "contact@minguet.fr"
+        }
+    ],
+    "version": "1.0",
+    "require": {
+        "symfony/framework-bundle": "^4.3",
+        "symfony/http-kernel": "^4.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Spipu\\CoreBundle\\": "./"
+        }
+    }
+}

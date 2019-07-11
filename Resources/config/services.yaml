@@ -1,0 +1,62 @@
+# This file is part of a Spipu Bundle
+#
+# (c) Laurent Minguet
+#
+# For the full copyright and license information, please view the LICENSE
+# file that was distributed with this source code.
+services:
+    Spipu\CoreBundle\Service\AsynchronousCommand:
+        arguments:
+            - '@Spipu\CoreBundle\Service\ProcessFactory'
+            - '@filesystem'
+            - '%kernel.project_dir%'
+            - '%kernel.logs_dir%'
+
+    Spipu\CoreBundle\Service\MailManager:
+        arguments:
+            - '@swiftmailer.mailer.default'
+            - '@twig'
+
+    # Role Definition
+    Spipu\CoreBundle\Service\RoleDefinition:
+        tags: ['spipu.user.role']
+
+    # Internal Services
+    Spipu\CoreBundle\Fixture\ListFixture:
+        arguments:
+            - !tagged 'spipu.fixture'
+
+    Spipu\CoreBundle\Assets\ListAsset:
+        arguments:
+            - !tagged 'spipu.asset'
+
+    Spipu\CoreBundle\Service\Filesystem:
+        arguments: []
+
+    Spipu\CoreBundle\Service\Assets:
+        arguments:
+            - '@Spipu\CoreBundle\Service\Filesystem'
+            - '@Spipu\CoreBundle\Service\FinderFactory'
+            - '@Spipu\CoreBundle\Assets\ListAsset'
+            - '%kernel.project_dir%'
+
+    Spipu\CoreBundle\Command\FixturesLoadCommand:
+        arguments:
+            - '@Spipu\CoreBundle\Fixture\ListFixture'
+        tags: ['console.command']
+
+    Spipu\CoreBundle\Command\FixturesRemoveCommand:
+        arguments:
+            - '@Spipu\CoreBundle\Fixture\ListFixture'
+        tags: ['console.command']
+
+    Spipu\CoreBundle\Command\AssetsInstallCommand:
+        arguments:
+            - '@Spipu\CoreBundle\Service\Assets'
+        tags: ['console.command']
+
+    Spipu\CoreBundle\Service\FinderFactory:
+        arguments: []
+
+    Spipu\CoreBundle\Service\ProcessFactory:
+        arguments: []
