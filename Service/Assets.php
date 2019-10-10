@@ -12,6 +12,7 @@ declare(strict_types = 1);
 
 namespace Spipu\CoreBundle\Service;
 
+use Exception;
 use Spipu\CoreBundle\Assets\AssetInterface;
 use Spipu\CoreBundle\Assets\ListAsset;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -65,7 +66,7 @@ class Assets
     /**
      * @param string $targetArg
      * @return string
-     * @throws \Exception
+     * @throws Exception
      */
     public function setTargetDir(string $targetArg): string
     {
@@ -77,7 +78,7 @@ class Assets
 
         if (!$this->filesystem->isDir($targetArg)) {
             if (!$this->filesystem->isDir($this->projectDir . DIRECTORY_SEPARATOR . $targetArg)) {
-                throw new \Exception(
+                throw new Exception(
                     sprintf(
                         'The target directory "%s" does not exist.',
                         $targetArg
@@ -115,12 +116,12 @@ class Assets
     /**
      * @param SymfonyStyle|null $sfIo
      * @return bool
-     * @throws \Exception
+     * @throws Exception
      */
     public function installAssets(?SymfonyStyle $sfIo = null): bool
     {
         if (!$this->targetDir) {
-            throw new \Exception('You must set the target dir first');
+            throw new Exception('You must set the target dir first');
         }
 
         $assets = $this->assets->get();
@@ -137,7 +138,7 @@ class Assets
     /**
      * @param AssetInterface $asset
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     private function installAsset(AssetInterface $asset): void
     {
@@ -160,14 +161,14 @@ class Assets
                 break;
 
             default:
-                throw new \Exception('Invalid Assert Type');
+                throw new Exception('Invalid Assert Type');
         }
     }
 
     /**
      * @param AssetInterface $asset
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     private function installAssetFromVendor(AssetInterface $asset): void
     {
@@ -185,7 +186,7 @@ class Assets
      * @param string $folderTo
      * @param array $mapping
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     private function installAssetFromPath(string $folderFrom, string $folderTo, array $mapping): void
     {
@@ -206,19 +207,19 @@ class Assets
                 continue;
             }
 
-            throw new \Exception(sprintf('Invalid asset path %s', $folderFrom . $source));
+            throw new Exception(sprintf('Invalid asset path %s', $folderFrom . $source));
         }
     }
 
     /**
      * @param AssetInterface $asset
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     private function installAssetFromUrl(AssetInterface $asset): void
     {
         if (!filter_var($asset->getSource(), FILTER_VALIDATE_URL)) {
-            throw new \Exception('The source must be a url');
+            throw new Exception('The source must be a url');
         }
 
         $libDir = $this->targetDir . $asset->getCode() . DIRECTORY_SEPARATOR;
@@ -231,16 +232,16 @@ class Assets
     /**
      * @param AssetInterface $asset
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     private function installAssetFromZip(AssetInterface $asset): void
     {
         if (!filter_var($asset->getSource(), FILTER_VALIDATE_URL)) {
-            throw new \Exception('The source must be a zip url');
+            throw new Exception('The source must be a zip url');
         }
 
         if (substr($asset->getSource(), -4) !== '.zip') {
-            throw new \Exception('The source must be a zip url');
+            throw new Exception('The source must be a zip url');
         }
 
         $libDir = $this->targetDir . $asset->getCode() . DIRECTORY_SEPARATOR;
@@ -252,7 +253,7 @@ class Assets
             $this->filesystem->copy($asset->getSource(), $zipFilename);
 
             if (!$this->filesystem->unZip($zipFilename, $zipFolder)) {
-                throw new \Exception('Unable to unzip ' . $zipFilename);
+                throw new Exception('Unable to unzip ' . $zipFilename);
             }
 
             $this->installAssetFromPath($zipFolder . DIRECTORY_SEPARATOR, $libDir, $asset->getMapping());

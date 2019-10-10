@@ -12,6 +12,7 @@ declare(strict_types = 1);
 
 namespace Spipu\CoreBundle\Service;
 
+use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Twig_Environment;
 
@@ -74,7 +75,7 @@ class MailManager
     {
         $receivers = explode(static::MAIL_SEPARATOR, $receiver);
 
-        $message = (new \Swift_Message($subject))
+        $message = (new Swift_Message($subject))
             ->setFrom($sender)
             ->setTo($receivers)
             ->setBody(

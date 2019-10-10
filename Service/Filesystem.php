@@ -12,6 +12,8 @@ declare(strict_types = 1);
 
 namespace Spipu\CoreBundle\Service;
 
+use ZipArchive;
+
 class Filesystem extends \Symfony\Component\Filesystem\Filesystem
 {
     /**
@@ -60,7 +62,7 @@ class Filesystem extends \Symfony\Component\Filesystem\Filesystem
      */
     public function unZip(string $zipFilename, string $folderDestination): bool
     {
-        $zip = new \ZipArchive();
+        $zip = new ZipArchive();
         $zip->open($zipFilename);
         $result = $zip->extractTo($folderDestination);
         $zip->close();

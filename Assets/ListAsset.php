@@ -12,6 +12,8 @@ declare(strict_types = 1);
 
 namespace Spipu\CoreBundle\Assets;
 
+use Exception;
+
 /**
  * All the assets
  */
@@ -25,7 +27,7 @@ class ListAsset
     /**
      * ListAsset constructor.
      * @param iterable $list
-     * @throws \Exception
+     * @throws Exception
      */
     public function __construct(iterable $list)
     {
@@ -39,14 +41,14 @@ class ListAsset
     /**
      * @param AssetInterface $asset
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     private function addAsset(AssetInterface $asset): void
     {
         $code = $asset->getCode();
 
         if (!preg_match('/^[a-z0-9\-]+$/', $code)) {
-            throw new \Exception('Invalid asset code');
+            throw new Exception('Invalid asset code');
         }
 
         $this->assets[$code] = $asset;

@@ -12,6 +12,7 @@ declare(strict_types = 1);
 
 namespace Spipu\CoreBundle\Fixture;
 
+use Exception;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -68,12 +69,12 @@ class ListFixture
     /**
      * @param string $code
      * @return FixtureInterface
-     * @throws \Exception
+     * @throws Exception
      */
     public function get(string $code): FixtureInterface
     {
         if (!array_key_exists($code, $this->fixtures)) {
-            throw new \Exception('Unknown fixture code');
+            throw new Exception('Unknown fixture code');
         }
 
         return $this->fixtures[$code];
