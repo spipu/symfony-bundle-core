@@ -14,7 +14,7 @@ services:
 
     Spipu\CoreBundle\Service\MailManager:
         arguments:
-            - '@swiftmailer.mailer.default'
+            - '@mailer.mailer'
             - '@twig'
 
     # Role Definition

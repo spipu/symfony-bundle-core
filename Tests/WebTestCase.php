@@ -1,7 +1,9 @@
 <?php
 namespace Spipu\CoreBundle\Tests;
 
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
+use Symfony\Bundle\SwiftmailerBundle\DataCollector\MessageDataCollector;
 use Symfony\Component\DomCrawler\Crawler;
 
 class WebTestCase extends BaseWebTestCase
@@ -82,5 +84,51 @@ class WebTestCase extends BaseWebTestCase
             0,
             $crawler->filter('span.form-error-message:contains("' . $message . '")')->count()
         );
+    }
+
+    /**
+     * @param KernelBrowser $client
+     * @return void
+     */
+    protected function assertHasNoEmail(KernelBrowser $client): void
+    {
+        /** @var MessageDataCollector $mailCollector */
+        $mailCollector = $client->getProfile()->getCollector('mailer');
+        $this->assertEquals(0, $mailCollector->getMessageCount());
+    }
+
+    /**
+     * @param KernelBrowser $client
+     * @param string $from
+     * @param string $to
+     * @param string $subject
+     * @param string|null $bodyContains
+     * @return string
+     */
+    protected function assertHasEmail(
+        KernelBrowser $client,
+        string $from,
+        string $to,
+        string $subject,
+        string $bodyContains = null
+    ): String {
+        /** @var MessageDataCollector $mailCollector */
+        $mailCollector = $client->getProfile()->getCollector('swiftmailer');
+
+        $this->assertGreaterThan(0, $mailCollector->getMessageCount());
+
+        $message = $mailCollector->getMessages()[0];
+        $mailCollector->reset();
+
+        $this->assertInstanceOf(\Swift_Message::class, $message);
+
+        $this->assertSame([$from], array_keys($message->getFrom()));
+        $this->assertSame([$to], array_keys($message->getTo()));
+        $this->assertSame($subject, $message->getSubject());
+        if ($bodyContains !== null) {
+            $this->assertStringContainsString($bodyContains, $message->getBody());
+        }
+
+        return $message->getBody();
     }
 }

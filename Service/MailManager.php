@@ -12,32 +12,36 @@ declare(strict_types = 1);
 
 namespace Spipu\CoreBundle\Service;
 
-use Swift_Message;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Twig_Environment;
+use Symfony\Component\Mailer\Exception\InvalidArgumentException;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
+use Twig\Environment as TwigEnvironment;
+use Twig\Error\Error as TwigError;
 
 class MailManager
 {
     const MAIL_SEPARATOR = ',';
 
     /**
-     * @var \Swift_Mailer $mailer
+     * @var MailerInterface
      */
     private $mailer;
 
     /**
-     * @var EngineInterface
+     * @var TwigEnvironment
      */
     private $twig;
 
     /**
      * MailManager constructor.
-     * @param  \Swift_Mailer $mailer
-     * @param Twig_Environment $twig
+     * @param MailerInterface $mailer
+     * @param TwigEnvironment $twig
      */
     public function __construct(
-        \Swift_Mailer $mailer,
-        Twig_Environment $twig
+        MailerInterface $mailer,
+        TwigEnvironment $twig
     ) {
         $this->mailer = $mailer;
         $this->twig = $twig;
@@ -46,16 +50,17 @@ class MailManager
     /**
      * @param string $subject
      * @param string $sender
-     * @param string $receiver
+     * @param mixed $receiver
      * @param string $twigTemplate
      * @param array $twigParameters
      * @return void
-     * @throws \Exception
+     * @throws TransportExceptionInterface
+     * @throws TwigError
      */
     public function sendTwigMail(
         string $subject,
         string $sender,
-        string $receiver,
+        $receiver,
         string $twigTemplate,
         array $twigParameters = []
     ) : void {
@@ -67,22 +72,61 @@ class MailManager
     /**
      * @param string $subject
      * @param string $sender
-     * @param string $receiver
+     * @param mixed $receiver
      * @param string $body
      * @return void
+     * @throws TransportExceptionInterface
      */
-    public function sendHtmlMail(string $subject, string $sender, string $receiver, string $body): void
+    public function sendHtmlMail(string $subject, string $sender, $receiver, string $body): void
     {
-        $receivers = explode(static::MAIL_SEPARATOR, $receiver);
+        $receiverList = $this->prepareEmailAddress($receiver);
 
-        $message = (new Swift_Message($subject))
-            ->setFrom($sender)
-            ->setTo($receivers)
-            ->setBody(
-                $body,
-                'text/html'
-            );
+        $message = (new Email())
+            ->from($sender)
+            ->to(...$receiverList)
+            ->priority(Email::PRIORITY_HIGH)
+            ->subject($subject)
+            ->text(strip_tags($body))
+            ->html($body);
 
         $this->mailer->send($message);
+    }
+
+    /**
+     * @param mixed $values
+     * @return Address[]
+     */
+    public function prepareEmailAddress($values): array
+    {
+        $list = null;
+
+        if (is_string($values)) {
+            $list = explode(static::MAIL_SEPARATOR, $values);
+        }
+
+        if (is_object($values) && $values instanceof Address) {
+            $list = [$values];
+        }
+
+        if (is_array($values)) {
+            $list = $values;
+        }
+
+        if (is_null($list)) {
+            throw new InvalidArgumentException('The provided value is not a valid address');
+        }
+
+        foreach ($list as $key => $value) {
+            if (is_string($value)) {
+                $list[$key] = new Address($value);
+                continue;
+            }
+
+            if (!is_object($value) || !($value instanceof Address)) {
+                throw new InvalidArgumentException('The provided value is not a valid address');
+            }
+        }
+
+        return $list;
     }
 }
