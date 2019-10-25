@@ -3,6 +3,7 @@ namespace Spipu\CoreBundle\Tests\Unit\Service;
 
 use PHPUnit\Framework\TestCase;
 use Spipu\CoreBundle\Service\MailManager;
+use Symfony\Component\Mailer\Exception\InvalidArgumentException;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mailer\SmtpEnvelope;
 use Symfony\Component\Mime\Address;
@@ -83,5 +84,83 @@ class MailManagerTest extends TestCase
             'to_1@test.fr,to_2@test.fr',
             'template.html.twig'
         );
+    }
+
+    public function testPrepareAddressesOk()
+    {
+        $address1 = new Address('test1@test.fr');
+        $address2 = new Address('test2@test.fr');
+
+        $twig   = $this->createMock(TwigEnvironment::class);
+        $mailer = $this->createMock(MailerInterface::class);
+
+        $service = new MailManager($mailer, $twig);
+
+        $result = $service->prepareEmailAddress($address1->getAddress());
+        $this->assertIsArray($result);
+        $this->assertSame(1, count($result));
+        $this->assertSame($address1->getAddress(), $result[0]->getAddress());
+
+        $result = $service->prepareEmailAddress($address1->getAddress().','.$address2->getAddress());
+        $this->assertIsArray($result);
+        $this->assertSame(2, count($result));
+        $this->assertSame($address1->getAddress(), $result[0]->getAddress());
+        $this->assertSame($address2->getAddress(), $result[1]->getAddress());
+
+        $result = $service->prepareEmailAddress($address1);
+        $this->assertIsArray($result);
+        $this->assertSame(1, count($result));
+        $this->assertSame($address1, $result[0]);
+
+        $result = $service->prepareEmailAddress([$address1, $address2]);
+        $this->assertIsArray($result);
+        $this->assertSame(2, count($result));
+        $this->assertSame($address1, $result[0]);
+        $this->assertSame($address2, $result[1]);
+
+        $result = $service->prepareEmailAddress([$address1, $address2->getAddress()]);
+        $this->assertIsArray($result);
+        $this->assertSame(2, count($result));
+        $this->assertSame($address1, $result[0]);
+        $this->assertSame($address2->getAddress(), $result[1]->getAddress());
+    }
+
+    public function testPrepareAddressesErrorBadTypeObject()
+    {
+        $address = new \StdClass();
+
+        $twig   = $this->createMock(TwigEnvironment::class);
+        $mailer = $this->createMock(MailerInterface::class);
+
+        $service = new MailManager($mailer, $twig);
+
+        $this->expectException(InvalidArgumentException::class);
+        $service->prepareEmailAddress($address);
+    }
+
+    public function testPrepareAddressesErrorBadTypeInt()
+    {
+        $address = 10;
+
+        $twig   = $this->createMock(TwigEnvironment::class);
+        $mailer = $this->createMock(MailerInterface::class);
+
+        $service = new MailManager($mailer, $twig);
+
+        $this->expectException(InvalidArgumentException::class);
+        $service->prepareEmailAddress($address);
+    }
+
+    public function testPrepareAddressesErrorBadTypeArray()
+    {
+        $addresses = ['test@test.fr', new \StdClass()];
+
+        $twig   = $this->createMock(TwigEnvironment::class);
+        $mailer = $this->createMock(MailerInterface::class);
+
+        $service = new MailManager($mailer, $twig);
+
+        $this->expectException(InvalidArgumentException::class);
+        $service->prepareEmailAddress($addresses);
     }
 }

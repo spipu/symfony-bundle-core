@@ -98,23 +98,7 @@ class MailManager
      */
     public function prepareEmailAddress($values): array
     {
-        $list = null;
-
-        if (is_string($values)) {
-            $list = explode(static::MAIL_SEPARATOR, $values);
-        }
-
-        if (is_object($values) && $values instanceof Address) {
-            $list = [$values];
-        }
-
-        if (is_array($values)) {
-            $list = $values;
-        }
-
-        if (is_null($list)) {
-            throw new InvalidArgumentException('The provided value is not a valid address');
-        }
+        $list = $this->convertAddressToArray($values);
 
         foreach ($list as $key => $value) {
             if (is_string($value)) {
@@ -128,5 +112,26 @@ class MailManager
         }
 
         return $list;
+    }
+
+    /**
+     * @param mixed $values
+     * @return array
+     */
+    private function convertAddressToArray($values): array
+    {
+        if (is_string($values)) {
+            return explode(static::MAIL_SEPARATOR, $values);
+        }
+
+        if (is_object($values) && $values instanceof Address) {
+            return [$values];
+        }
+
+        if (is_array($values)) {
+            return $values;
+        }
+
+        throw new InvalidArgumentException('The provided value is not a valid address');
     }
 }
