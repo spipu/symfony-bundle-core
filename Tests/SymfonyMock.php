@@ -9,7 +9,7 @@ use Doctrine\ORM\QueryBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Cache\CacheItemPoolInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use Symfony\Component\Console\Input\InputInterface;
@@ -331,17 +331,17 @@ class SymfonyMock extends TestCase
 
     /**
      * @param TestCase $testCase
-     * @return MockObject|RegistryInterface
+     * @return MockObject|ManagerRegistry
      */
     public static function getEntityRegistry(TestCase $testCase)
     {
-        $registry = $testCase->createMock(RegistryInterface::class);
+        $registry = $testCase->createMock(ManagerRegistry::class);
 
         $registry
             ->method('getManagerForClass')
             ->willReturn(SymfonyMock::getEntityManager($testCase));
 
-        /** @var RegistryInterface $registry */
+        /** @var ManagerRegistry $registry */
         return $registry;
     }
 

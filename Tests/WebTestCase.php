@@ -110,24 +110,19 @@ class WebTestCase extends BaseWebTestCase
         string $subject,
         string $bodyContains = null
     ): String {
-//        $mailCollector = $client->getProfile()->getCollector('swiftmailer');
-//
-//        $this->assertGreaterThan(0, $mailCollector->getMessageCount());
-//
-//        $message = $mailCollector->getMessages()[0];
-//        $mailCollector->reset();
-//
-//        $this->assertInstanceOf(\Swift_Message::class, $message);
-//
-//        $this->assertSame([$from], array_keys($message->getFrom()));
-//        $this->assertSame([$to], array_keys($message->getTo()));
-//        $this->assertSame($subject, $message->getSubject());
-//        if ($bodyContains !== null) {
-//            $this->assertStringContainsString($bodyContains, $message->getBody());
-//        }
 
-//        return $message->getBody();
+        $this->assertEmailCount(1);
 
-        return '';
+        $email = $this->getMailerMessage(0);
+
+        $this->assertEmailHeaderSame($email, 'From', $from);
+        $this->assertEmailHeaderSame($email, 'To', $to);
+        $this->assertEmailHeaderSame($email, 'Subject', $subject);
+
+        if ($bodyContains !== null) {
+            $this->assertEmailTextBodyContains($email, $bodyContains);
+        }
+
+        return $email->getHtmlBody();
     }
 }
