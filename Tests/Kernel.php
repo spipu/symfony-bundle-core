@@ -35,7 +35,7 @@ class Kernel extends AppKernel
         return $this->getProjectDir().'/var-test/log';
     }
 
-    protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader)
+    protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
     {
         parent::configureContainer($container, $loader);
 
