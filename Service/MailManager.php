@@ -79,11 +79,12 @@ class MailManager
      */
     public function sendHtmlMail(string $subject, string $sender, $receiver, string $body): void
     {
-        $receiverList = $this->prepareEmailAddress($receiver);
+        $senderAddress     = $this->prepareEmailAddress($sender);
+        $receiverAddresses = $this->prepareEmailAddresses($receiver);
 
         $message = (new Email())
-            ->from($sender)
-            ->to(...$receiverList)
+            ->from($senderAddress)
+            ->to(...$receiverAddresses)
             ->priority(Email::PRIORITY_HIGH)
             ->subject($subject)
             ->text(strip_tags($body))
@@ -96,22 +97,33 @@ class MailManager
      * @param mixed $values
      * @return Address[]
      */
-    public function prepareEmailAddress($values): array
+    public function prepareEmailAddresses($values): array
     {
         $list = $this->convertAddressToArray($values);
 
         foreach ($list as $key => $value) {
-            if (is_string($value)) {
-                $list[$key] = new Address($value);
-                continue;
-            }
-
-            if (!is_object($value) || !($value instanceof Address)) {
-                throw new InvalidArgumentException('The provided value is not a valid address');
-            }
+            $list[$key] = $this->prepareEmailAddress($value);
         }
 
         return $list;
+    }
+
+    /**
+     * @param mixed $value
+     * @return Address
+     * @SuppressWarnings(PMD.StaticAccess)
+     */
+    public function prepareEmailAddress($value): Address
+    {
+        if (is_string($value)) {
+            $value = Address::fromString($value);
+        }
+
+        if (!is_object($value) || !($value instanceof Address)) {
+            throw new InvalidArgumentException('The provided value is not a valid address');
+        }
+
+        return $value;
     }
 
     /**

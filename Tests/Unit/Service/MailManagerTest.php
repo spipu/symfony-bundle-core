@@ -3,9 +3,9 @@ namespace Spipu\CoreBundle\Tests\Unit\Service;
 
 use PHPUnit\Framework\TestCase;
 use Spipu\CoreBundle\Service\MailManager;
+use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mailer\Exception\InvalidArgumentException;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mailer\SmtpEnvelope;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Twig\Environment as TwigEnvironment;
@@ -35,7 +35,7 @@ class MailManagerTest extends TestCase
             ->method('send')
             ->will(
                 $this->returnCallback(
-                    function (Email $email, SmtpEnvelope $envelope = null) {
+                    function (Email $email, Envelope $envelope = null) {
                         $this->validateAddresses(['from@test.fr'], $email->getFrom());
                         $this->validateAddresses(['to_1@test.fr', 'to_2@test.fr'], $email->getTo());
                         $this->assertSame('Subject', $email->getSubject());
@@ -68,7 +68,7 @@ class MailManagerTest extends TestCase
             ->method('send')
             ->will(
                 $this->returnCallback(
-                    function (Email $email, SmtpEnvelope $envelope = null) {
+                    function (Email $email, Envelope $envelope = null) {
                         $this->validateAddresses(['from@test.fr'], $email->getFrom());
                         $this->validateAddresses(['to_1@test.fr', 'to_2@test.fr'], $email->getTo());
                         $this->assertSame('Subject', $email->getSubject());
@@ -96,29 +96,29 @@ class MailManagerTest extends TestCase
 
         $service = new MailManager($mailer, $twig);
 
-        $result = $service->prepareEmailAddress($address1->getAddress());
+        $result = $service->prepareEmailAddresses($address1->getAddress());
         $this->assertIsArray($result);
         $this->assertSame(1, count($result));
         $this->assertSame($address1->getAddress(), $result[0]->getAddress());
 
-        $result = $service->prepareEmailAddress($address1->getAddress().','.$address2->getAddress());
+        $result = $service->prepareEmailAddresses($address1->getAddress().','.$address2->getAddress());
         $this->assertIsArray($result);
         $this->assertSame(2, count($result));
         $this->assertSame($address1->getAddress(), $result[0]->getAddress());
         $this->assertSame($address2->getAddress(), $result[1]->getAddress());
 
-        $result = $service->prepareEmailAddress($address1);
+        $result = $service->prepareEmailAddresses($address1);
         $this->assertIsArray($result);
         $this->assertSame(1, count($result));
         $this->assertSame($address1, $result[0]);
 
-        $result = $service->prepareEmailAddress([$address1, $address2]);
+        $result = $service->prepareEmailAddresses([$address1, $address2]);
         $this->assertIsArray($result);
         $this->assertSame(2, count($result));
         $this->assertSame($address1, $result[0]);
         $this->assertSame($address2, $result[1]);
 
-        $result = $service->prepareEmailAddress([$address1, $address2->getAddress()]);
+        $result = $service->prepareEmailAddresses([$address1, $address2->getAddress()]);
         $this->assertIsArray($result);
         $this->assertSame(2, count($result));
         $this->assertSame($address1, $result[0]);
@@ -135,7 +135,7 @@ class MailManagerTest extends TestCase
         $service = new MailManager($mailer, $twig);
 
         $this->expectException(InvalidArgumentException::class);
-        $service->prepareEmailAddress($address);
+        $service->prepareEmailAddresses($address);
     }
 
     public function testPrepareAddressesErrorBadTypeInt()
@@ -148,7 +148,7 @@ class MailManagerTest extends TestCase
         $service = new MailManager($mailer, $twig);
 
         $this->expectException(InvalidArgumentException::class);
-        $service->prepareEmailAddress($address);
+        $service->prepareEmailAddresses($address);
     }
 
     public function testPrepareAddressesErrorBadTypeArray()
@@ -161,6 +161,6 @@ class MailManagerTest extends TestCase
         $service = new MailManager($mailer, $twig);
 
         $this->expectException(InvalidArgumentException::class);
-        $service->prepareEmailAddress($addresses);
+        $service->prepareEmailAddresses($addresses);
     }
 }
