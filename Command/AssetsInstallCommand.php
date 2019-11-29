@@ -77,10 +77,10 @@ directory (e.g. the <comment>public</comment> directory).
      * @param InputInterface $input
      * @param OutputInterface $output
      *
-     * @return void
+     * @return int
      * @throws \Exception
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $sfIo = new SymfonyStyle($input, $output);
         $sfIo->newLine();
@@ -90,5 +90,7 @@ directory (e.g. the <comment>public</comment> directory).
         $this->assets->installAssets($sfIo);
 
         $sfIo->newLine();
+
+        return 0;
     }
 }

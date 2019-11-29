@@ -9,9 +9,14 @@ class WebTestCase extends BaseWebTestCase
 {
     protected static $dataPrimerInitialized = false;
 
+    /**
+     * @var KernelBrowser
+     */
+    protected static $clientCache;
+
     public function setUp(): void
     {
-        self::bootKernel();
+        self::$clientCache = parent::createClient();
 
         if (!self::$dataPrimerInitialized) {
             self::$dataPrimerInitialized = true;
@@ -91,8 +96,7 @@ class WebTestCase extends BaseWebTestCase
      */
     protected function assertHasNoEmail(KernelBrowser $client): void
     {
-//        $mailCollector = $client->getProfile()->getCollector('mailer');
-//        $this->assertEquals(0, $mailCollector->getMessageCount());
+        $this->assertEmailCount(0);
     }
 
     /**
@@ -124,5 +128,17 @@ class WebTestCase extends BaseWebTestCase
         }
 
         return $email->getHtmlBody();
+    }
+
+    /**
+     * @param array $options
+     * @param array $server
+     * @return KernelBrowser
+     */
+    protected static function createClient(array $options = [], array $server = [])
+    {
+        self::$clientCache->restart();
+
+        return self::$clientCache;
     }
 }

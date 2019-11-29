@@ -7,24 +7,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class Kernel extends AppKernel
 {
-    /**
-     * @var string
-     */
-    private $projectDir;
-
-    public function getProjectDir()
-    {
-        if (null === $this->projectDir) {
-            $this->projectDir = dirname(dirname(__DIR__));
-
-            while (!is_file($this->projectDir . '/composer.json')) {
-                $this->projectDir = dirname($this->projectDir);
-            }
-        }
-
-        return $this->projectDir;
-    }
-
     public function getCacheDir()
     {
         return $this->getProjectDir().'/var-test/cache';

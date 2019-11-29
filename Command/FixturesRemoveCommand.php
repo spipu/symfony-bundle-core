@@ -58,15 +58,17 @@ class FixturesRemoveCommand extends Command
      * @param InputInterface $input
      * @param OutputInterface $output
      *
-     * @return void
+     * @return int
      * @SuppressWarnings(PMD.UnusedFormalParameter)
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln("Fixture - Remove - Begin");
 
         $this->listFixture->remove($output);
 
         $output->writeln("Fixture - Remove - Finished");
+
+        return 0;
     }
 }

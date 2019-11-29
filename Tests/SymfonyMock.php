@@ -158,14 +158,8 @@ class SymfonyMock extends TestCase
         );
 
         $containerBuilder->method('setAlias')->willReturnCallback(
-            function ($alias, $id) {
-                if (\is_string($id)) {
-                    $id = new Alias($id);
-                } elseif (!$id instanceof Alias) {
-                    throw new InvalidArgumentException('$id must be a string, or an Alias object.');
-                }
-
-                return $id;
+            function ($alias, string $id) {
+                return new Alias($id);
             }
         );
 

@@ -58,15 +58,17 @@ class FixturesLoadCommand extends Command
      * @param InputInterface $input
      * @param OutputInterface $output
      *
-     * @return void
+     * @return int
      * @SuppressWarnings(PMD.UnusedFormalParameter)
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln("Fixture - Load - Begin");
 
         $this->listFixture->load($output);
 
         $output->writeln("Fixture - Load - Finished");
+
+        return 0;
     }
 }
