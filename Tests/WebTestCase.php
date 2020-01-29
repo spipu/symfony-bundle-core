@@ -1,6 +1,7 @@
 <?php
 namespace Spipu\CoreBundle\Tests;
 
+use Exception;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
@@ -25,7 +26,11 @@ class WebTestCase extends BaseWebTestCase
             $output = SymfonyMock::getConsoleOutput($this);
 
             $listFixture = self::$container->get('Spipu\CoreBundle\Fixture\ListFixture');
-            $listFixture->get('sample-user')->setMaxSteps(2);
+            try {
+                $listFixture->get('sample-user')->setMaxSteps(2);
+            } catch (Exception $e) {
+                // Do Nothing, the fixture does not exists...
+            }
             $listFixture->load($output);
         }
     }
