@@ -2,6 +2,7 @@
 namespace Spipu\CoreBundle\Tests;
 
 use Exception;
+use Spipu\CoreBundle\Fixture\ListFixture;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
@@ -23,15 +24,34 @@ class WebTestCase extends BaseWebTestCase
             self::$dataPrimerInitialized = true;
 
             DatabasePrimer::prime(self::$kernel);
-            $output = SymfonyMock::getConsoleOutput($this);
 
-            $listFixture = self::$container->get('Spipu\CoreBundle\Fixture\ListFixture');
-            try {
-                $listFixture->get('sample-user')->setMaxSteps(2);
-            } catch (Exception $e) {
-                // Do Nothing, the fixture does not exists...
-            }
-            $listFixture->load($output);
+            $this->loadFixtures();
+        }
+    }
+
+    /**
+     * @return void
+     */
+    protected function loadFixtures()
+    {
+        /** @var ListFixture $listFixtures */
+        $listFixture = self::$container->get('Spipu\CoreBundle\Fixture\ListFixture');
+        $this->setupFixtures($listFixture);
+
+        $output = SymfonyMock::getConsoleOutput($this);
+        $listFixture->load($output);
+    }
+
+    /**
+     * @param ListFixture $listFixture
+     * @return void
+     */
+    protected function setupFixtures(ListFixture $listFixture)
+    {
+        try {
+            $listFixture->get('sample-user')->setMaxSteps(2);
+        } catch (Exception $e) {
+            // Do Nothing, the fixture does not exists...
         }
     }
 
