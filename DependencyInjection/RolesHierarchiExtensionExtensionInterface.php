@@ -12,12 +12,12 @@ declare(strict_types = 1);
 
 namespace Spipu\CoreBundle\DependencyInjection;
 
-use Spipu\CoreBundle\Service\RoleDefinitionInterface;
+@trigger_error(sprintf('The "%s" class is deprecated, use "%s" instead.', RolesHierarchiExtensionExtensionInterface::class, RolesHierarchyExtensionExtensionInterface::class), E_USER_DEPRECATED);
 
-interface RolesHierarchiExtensionExtensionInterface
+/**
+ * @SuppressWarnings(PMD.LongClassName)
+ * @deprecated use RolesHierarchyExtensionExtensionInterface instead.
+ */
+interface RolesHierarchiExtensionExtensionInterface extends RolesHierarchyExtensionExtensionInterface
 {
-    /**
-     * @return RoleDefinitionInterface
-     */
-    public function getRolesHierarchy(): RoleDefinitionInterface;
 }

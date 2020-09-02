@@ -23,7 +23,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 final class SpipuCoreExtension extends Extension implements
     PrependExtensionInterface,
-    RolesHierarchiExtensionExtensionInterface
+    RolesHierarchyExtensionExtensionInterface
 {
     /**
      * @param array $config
@@ -47,7 +47,7 @@ final class SpipuCoreExtension extends Extension implements
     public function prepend(ContainerBuilder $container)
     {
         foreach ($container->getExtensions() as $extension) {
-            if (!($extension instanceof RolesHierarchiExtensionExtensionInterface)) {
+            if (!($extension instanceof RolesHierarchyExtensionExtensionInterface)) {
                 continue;
             }
             $extension->getRolesHierarchy()->buildDefinition();

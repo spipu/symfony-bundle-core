@@ -2,7 +2,7 @@
 namespace Spipu\CoreBundle\Tests\Unit\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
-use Spipu\CoreBundle\DependencyInjection\RolesHierarchiExtensionExtensionInterface;
+use Spipu\CoreBundle\DependencyInjection\RolesHierarchyExtensionExtensionInterface;
 use Spipu\CoreBundle\DependencyInjection\SpipuCoreExtension;
 use Spipu\CoreBundle\Service\RoleDefinitionInterface;
 use Spipu\CoreBundle\Tests\SymfonyMock;
@@ -33,7 +33,7 @@ class SpipuCoreExtensionTest extends TestCase
 
         $builder = SymfonyMock::getContainerBuilder($this, [$extension, new \stdClass()]);
 
-        $this->assertInstanceOf(RolesHierarchiExtensionExtensionInterface::class, $extension);
+        $this->assertInstanceOf(RolesHierarchyExtensionExtensionInterface::class, $extension);
         $this->assertInstanceOf(RoleDefinitionInterface::class, $extension->getRolesHierarchy());
 
         $extension->load([], $builder);
