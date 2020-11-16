@@ -30,6 +30,9 @@ services:
         arguments:
             - !tagged 'spipu.asset'
 
+    Spipu\CoreBundle\Service\EncoderFactory:
+        arguments: []
+
     Spipu\CoreBundle\Service\Filesystem:
         arguments: []
 
