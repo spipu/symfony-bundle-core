@@ -12,14 +12,32 @@ services:
             - '%kernel.project_dir%'
             - '%kernel.logs_dir%'
 
+    # Role Definition
+    Spipu\CoreBundle\Service\RoleDefinition:
+        tags: ['spipu.user.role']
+
+    # External Services
     Spipu\CoreBundle\Service\MailManager:
         arguments:
             - '@mailer.mailer'
             - '@twig'
 
-    # Role Definition
-    Spipu\CoreBundle\Service\RoleDefinition:
-        tags: ['spipu.user.role']
+    Spipu\CoreBundle\Service\EncoderFactory:
+        arguments: []
+
+    Spipu\CoreBundle\Service\EncryptorInterface:
+        class: \Spipu\CoreBundle\Service\Encryptor
+        arguments:
+            - '%kernel.secret%'
+
+    Spipu\CoreBundle\Service\Filesystem:
+        arguments: []
+
+    Spipu\CoreBundle\Service\FinderFactory:
+        arguments: []
+
+    Spipu\CoreBundle\Service\ProcessFactory:
+        arguments: []
 
     # Internal Services
     Spipu\CoreBundle\Fixture\ListFixture:
@@ -29,12 +47,6 @@ services:
     Spipu\CoreBundle\Assets\ListAsset:
         arguments:
             - !tagged 'spipu.asset'
-
-    Spipu\CoreBundle\Service\EncoderFactory:
-        arguments: []
-
-    Spipu\CoreBundle\Service\Filesystem:
-        arguments: []
 
     Spipu\CoreBundle\Service\Assets:
         arguments:
@@ -58,8 +70,3 @@ services:
             - '@Spipu\CoreBundle\Service\Assets'
         tags: ['console.command']
 
-    Spipu\CoreBundle\Service\FinderFactory:
-        arguments: []
-
-    Spipu\CoreBundle\Service\ProcessFactory:
-        arguments: []
