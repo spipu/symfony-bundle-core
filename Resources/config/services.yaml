@@ -4,6 +4,9 @@
 #
 # For the full copyright and license information, please view the LICENSE
 # file that was distributed with this source code.
+parameters:
+    spipu.core.encryptor.key_pair: "please generate a new key pair with spipu:encryptor:generate-key-pair"
+
 services:
     Spipu\CoreBundle\Service\AsynchronousCommand:
         arguments:
@@ -28,7 +31,7 @@ services:
     Spipu\CoreBundle\Service\EncryptorInterface:
         class: \Spipu\CoreBundle\Service\Encryptor
         arguments:
-            - '%kernel.secret%'
+            - '%spipu.core.encryptor.key_pair%'
 
     Spipu\CoreBundle\Service\Filesystem:
         arguments: []
@@ -70,3 +73,5 @@ services:
             - '@Spipu\CoreBundle\Service\Assets'
         tags: ['console.command']
 
+    Spipu\CoreBundle\Command\EncryptorKeyPair:
+        tags: ['console.command']

@@ -22,7 +22,7 @@ interface EncryptorInterface
 
     /**
      * @param string $value
-     * @return string
+     * @return string|null
      */
-    public function decrypt(string $value): string;
+    public function decrypt(string $value): ?string;
 }

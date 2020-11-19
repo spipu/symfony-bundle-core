@@ -9,7 +9,9 @@ class EncryptorTest extends TestCase
 {
     public function testService()
     {
-        $service = new Encryptor('my_secret_phrase');
+        $keyPair = (new Encryptor(''))->generateKeyPair();
+
+        $service = new Encryptor($keyPair);
         $this->assertInstanceOf(EncryptorInterface::class, $service);
 
         $originalString = 'My string to encode';
