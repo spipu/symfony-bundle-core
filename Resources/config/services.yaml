@@ -42,6 +42,10 @@ services:
     Spipu\CoreBundle\Service\ProcessFactory:
         arguments: []
 
+    Spipu\CoreBundle\Service\RoleDefinitionList:
+        arguments:
+            - !tagged 'spipu.user.role'
+
     # Internal Services
     Spipu\CoreBundle\Fixture\ListFixture:
         arguments:

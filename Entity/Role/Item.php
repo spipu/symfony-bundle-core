@@ -48,6 +48,11 @@ class Item
     private $children = [];
 
     /**
+     * @var string|null
+     */
+    private $purpose = 'admin';
+
+    /**
      * Item constructor.
      * @param string $code
      */
@@ -117,6 +122,25 @@ class Item
     public function setWeight(int $weight): self
     {
         $this->weight = $weight;
+
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getPurpose(): ?string
+    {
+        return $this->purpose;
+    }
+
+    /**
+     * @param string|null $purpose
+     * @return $this
+     */
+    public function setPurpose(?string $purpose): self
+    {
+        $this->purpose = $purpose;
 
         return $this;
     }

@@ -24,6 +24,7 @@ class RoleDefinition implements RoleDefinitionInterface
         Item::load('ROLE_USER')
             ->setLabel('spipu.core.role.user')
             ->setType(Item::TYPE_PROFILE)
+            ->setPurpose(null)
             ->setWeight(10);
 
         Item::load('ROLE_ADMIN')
