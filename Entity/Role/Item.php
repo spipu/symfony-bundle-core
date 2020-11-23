@@ -43,7 +43,7 @@ class Item
     private $weight = 10;
 
     /**
-     * @var string[]
+     * @var Item[]
      */
     private $children = [];
 

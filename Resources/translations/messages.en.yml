@@ -5,3 +5,6 @@ spipu:
             admin:       "Default Admin"
             super_admin: "Super Administrator"
 
+        role-type:
+            role:    "Roles"
+            profile: "Profiles"

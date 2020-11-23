@@ -77,5 +77,5 @@ services:
             - '@Spipu\CoreBundle\Service\Assets'
         tags: ['console.command']
 
-    Spipu\CoreBundle\Command\EncryptorKeyPair:
+    Spipu\CoreBundle\Command\EncryptorKeyPairCommand:
         tags: ['console.command']
