@@ -1,0 +1,10 @@
+spipu:
+    core:
+        role:
+            user:        "Utilisateur par défaut"
+            admin:       "Administrateur par défaut"
+            super_admin: "Super Administrateur"
+
+        role-type:
+            role:    "Roles"
+            profile: "Profils"
