@@ -7,12 +7,12 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class Kernel extends AppKernel
 {
-    public function getCacheDir()
+    public function getCacheDir(): string
     {
         return $this->getProjectDir().'/var-test/cache';
     }
 
-    public function getLogDir()
+    public function getLogDir(): string
     {
         return $this->getProjectDir().'/var-test/log';
     }

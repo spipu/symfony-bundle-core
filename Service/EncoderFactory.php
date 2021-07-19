@@ -12,17 +12,17 @@ declare(strict_types = 1);
 
 namespace Spipu\CoreBundle\Service;
 
-use Symfony\Component\Security\Core\Encoder\NativePasswordEncoder;
-use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\PasswordHasherInterface;
+use Symfony\Component\PasswordHasher\Hasher\NativePasswordHasher;
 
 class EncoderFactory
 {
     /**
-     * @return PasswordEncoderInterface
+     * @return PasswordHasherInterface
      * @SuppressWarnings(PMD.StaticAccess)
      */
-    public function create(): PasswordEncoderInterface
+    public function create(): PasswordHasherInterface
     {
-        return new NativePasswordEncoder();
+        return new NativePasswordHasher();
     }
 }

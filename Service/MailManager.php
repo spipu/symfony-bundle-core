@@ -116,7 +116,7 @@ class MailManager
     public function prepareEmailAddress($value): Address
     {
         if (is_string($value)) {
-            $value = Address::fromString($value);
+            $value = Address::create($value);
         }
 
         if (!is_object($value) || !($value instanceof Address)) {
