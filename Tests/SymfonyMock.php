@@ -34,14 +34,14 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
-use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Twig\Environment as Twig_Environment;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
 
 class SymfonyMock extends TestCase
 {
@@ -498,10 +498,14 @@ class SymfonyMock extends TestCase
         self::$consoleOutputMessages = [];
 
         $output = $testCase->createMock(OutputInterface::class);
+        $formatter = $testCase->createMock(OutputFormatterInterface::class);
 
+        $formatter
+            ->method('isDecorated')
+            ->willReturn(false);
         $output
             ->method('getFormatter')
-            ->willReturn($testCase->createMock(OutputFormatterInterface::class));
+            ->willReturn($formatter);
 
         $output
             ->method('write')
@@ -627,10 +631,10 @@ class SymfonyMock extends TestCase
      */
     public static function getPasswordEncoder(TestCase $testCase)
     {
-        $encoder = $testCase->createMock(PasswordEncoderInterface::class);
+        $encoder = $testCase->createMock(PasswordHasherInterface::class);
 
         $encoder
-            ->method('encodePassword')
+            ->method('verify')
             ->willReturnCallback(
                 function ($raw, $salt) {
                     return 'encoded_' . $raw;
@@ -641,7 +645,7 @@ class SymfonyMock extends TestCase
             ->method('isPasswordValid')
             ->willReturnCallback(
                 function ($encoded, $raw, $salt) use ($encoder) {
-                    return $encoded === $encoder->encodePassword($raw, $salt);
+                    return $encoded === $encoder->verify($raw, $salt);
                 }
             );
 
@@ -651,16 +655,16 @@ class SymfonyMock extends TestCase
 
     /**
      * @param TestCase $testCase
-     * @return MockObject|EncoderFactoryInterface
+     * @return MockObject|PasswordHasherFactoryInterface
      */
     public static function getEncoderFactory(TestCase $testCase)
     {
-        $encoderFactory = $testCase->createMock(EncoderFactoryInterface::class);
+        $encoderFactory = $testCase->createMock(PasswordHasherFactoryInterface::class);
         $encoderFactory
             ->method('getEncoder')
             ->willReturn(self::getPasswordEncoder($testCase));
 
-        /** @var EncoderFactoryInterface $encoderFactory */
+        /** @var PasswordHasherFactoryInterface $encoderFactory */
         return $encoderFactory;
     }
 
@@ -674,8 +678,8 @@ class SymfonyMock extends TestCase
         $userProvider = $testCase->createMock(UserProviderInterface::class);
         $userProvider
             ->expects($testCase->once())
-            ->method('loadUserByUsername')
-            ->with($user->getUsername())
+            ->method('loadUserByIdentifier')
+            ->with($user->getUserIdentifier())
             ->willReturn($user);
 
         /** @var UserProviderInterface $userProvider */
@@ -684,14 +688,14 @@ class SymfonyMock extends TestCase
 
     /**
      * @param TestCase $testCase
-     * @return MockObject|UserPasswordEncoderInterface
+     * @return MockObject|UserPasswordHasher
      */
-    public static function getUserPasswordEncoder(TestCase $testCase)
+    public static function getUserPasswordEncoder(TestCase $testCase): UserPasswordHasher
     {
-        $encoder = $testCase->createMock(UserPasswordEncoderInterface::class);
+        $encoder = $testCase->createMock(UserPasswordHasher::class);
 
         $encoder
-            ->method('encodePassword')
+            ->method('hashPassword')
             ->willReturnCallback(
                 function (UserInterface $user, $plainPassword) {
                     return 'encoded_' . $plainPassword;
@@ -702,11 +706,10 @@ class SymfonyMock extends TestCase
             ->method('isPasswordValid')
             ->willReturnCallback(
                 function (UserInterface $user, $raw) use ($encoder) {
-                    return $user->getPassword() === $encoder->encodePassword($user, $raw);
+                    return $user->getPassword() === $encoder->hashPassword($user, $raw);
                 }
             );
 
-        /** @var UserPasswordEncoderInterface $encoder */
         return $encoder;
     }
 

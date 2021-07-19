@@ -20,7 +20,8 @@ class WebTestCase extends BaseWebTestCase
     {
         self::$clientCache = parent::createClient();
 
-        $this->prepareDataPrimer(self::$kernel, self::$container);
+        $container = self::getContainer();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+        $this->prepareDataPrimer(self::$kernel, $container);
     }
 
     /**
