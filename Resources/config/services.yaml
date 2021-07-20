@@ -25,11 +25,11 @@ services:
             - '@mailer.mailer'
             - '@twig'
 
-    Spipu\CoreBundle\Service\EncoderFactory:
+    Spipu\CoreBundle\Service\HasherFactory:
         arguments: []
 
     Spipu\CoreBundle\Service\EncryptorInterface:
-        class: \Spipu\CoreBundle\Service\Encryptor
+        class: Spipu\CoreBundle\Service\Encryptor
         arguments:
             - '%spipu.core.encryptor.key_pair%'
 

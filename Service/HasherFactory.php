@@ -15,7 +15,7 @@ namespace Spipu\CoreBundle\Service;
 use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 use Symfony\Component\PasswordHasher\Hasher\NativePasswordHasher;
 
-class EncoderFactory
+class HasherFactory
 {
     /**
      * @return PasswordHasherInterface
