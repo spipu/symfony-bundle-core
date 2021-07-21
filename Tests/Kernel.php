@@ -2,25 +2,33 @@
 namespace Spipu\CoreBundle\Tests;
 
 use App\Kernel as AppKernel;
-use Symfony\Component\Config\Loader\LoaderInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 class Kernel extends AppKernel
 {
+    /**
+     * @return string
+     */
     public function getCacheDir(): string
     {
         return $this->getProjectDir().'/var-test/cache';
     }
 
+    /**
+     * @return string
+     */
     public function getLogDir(): string
     {
         return $this->getProjectDir().'/var-test/log';
     }
 
-    protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
+    /**
+     * @param ContainerConfigurator $container
+     */
+    protected function configureContainer(ContainerConfigurator $container): void
     {
-        parent::configureContainer($container, $loader);
+        parent::configureContainer($container);
 
-        $container->setParameter('APP_SETTINGS_DATABASE_URL', 'sqlite:///%kernel.project_dir%/var-test/test.sqlite');
+        $container->parameters()->set('APP_SETTINGS_DATABASE_URL', 'sqlite:///%kernel.project_dir%/var-test/test.sqlite');
     }
 }

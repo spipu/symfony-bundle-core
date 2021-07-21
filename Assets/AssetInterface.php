@@ -8,15 +8,15 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Spipu\CoreBundle\Assets;
 
 interface AssetInterface
 {
-    const TYPE_VENDOR = 'vendor';
-    const TYPE_URL = 'url';
-    const TYPE_URL_ZIP = 'zip';
+    public const TYPE_VENDOR = 'vendor';
+    public const TYPE_URL = 'url';
+    public const TYPE_URL_ZIP = 'zip';
     /**
      * @return string
      */

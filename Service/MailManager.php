@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Spipu\CoreBundle\Service;
 
@@ -22,7 +22,7 @@ use Twig\Error\Error as TwigError;
 
 class MailManager
 {
-    const MAIL_SEPARATOR = ',';
+    public const MAIL_SEPARATOR = ',';
 
     /**
      * @var MailerInterface
@@ -63,7 +63,7 @@ class MailManager
         $receiver,
         string $twigTemplate,
         array $twigParameters = []
-    ) : void {
+    ): void {
         $body = $this->twig->render($twigTemplate, $twigParameters);
 
         $this->sendHtmlMail($subject, $sender, $receiver, $body);

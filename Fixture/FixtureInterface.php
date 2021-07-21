@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Spipu\CoreBundle\Fixture;
 
@@ -28,13 +28,13 @@ interface FixtureInterface
      * @param OutputInterface $output
      * @return void
      */
-    public function load(OutputInterface $output) : void;
+    public function load(OutputInterface $output): void;
 
     /**
      * @param OutputInterface $output
      * @return void
      */
-    public function remove(OutputInterface $output) : void;
+    public function remove(OutputInterface $output): void;
 
     /**
      * @return int
