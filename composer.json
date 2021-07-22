@@ -11,10 +11,10 @@
     ],
     "version": "1.0",
     "require": {
-        "symfony/framework-bundle": "^4.4",
-        "symfony/http-kernel": "^4.4",
-        "symfony/mime": "^4.4",
-        "symfony/mailer": "^4.4"
+        "symfony/framework-bundle": "^5.3",
+        "symfony/http-kernel": "^5.3",
+        "symfony/mime": "^5.3",
+        "symfony/mailer": "^5.3"
     },
     "autoload": {
         "psr-4": {
