@@ -87,7 +87,7 @@ trait WebTestCaseTrait
     {
         $this->assertGreaterThan(
             0,
-            $crawler->filter('td[data-field-name=' . $fieldName . ']:contains("'. $fieldValue .'")')->count()
+            $crawler->filter('td[data-field-name=' . $fieldName . ']:contains("' . $fieldValue . '")')->count()
         );
     }
 

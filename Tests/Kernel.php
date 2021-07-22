@@ -21,7 +21,7 @@ class Kernel extends AppKernel
      */
     public function getCacheDir(): string
     {
-        return $this->getProjectDir().'/var-test/cache';
+        return $this->getProjectDir() . '/var-test/cache';
     }
 
     /**
@@ -29,7 +29,7 @@ class Kernel extends AppKernel
      */
     public function getLogDir(): string
     {
-        return $this->getProjectDir().'/var-test/log';
+        return $this->getProjectDir() . '/var-test/log';
     }
 
     /**

@@ -104,7 +104,7 @@ class Encryptor implements EncryptorInterface
     private function getKeyPairException(): EncryptorException
     {
         return new EncryptorException(
-            'The encryptor Key Pair is invalid, '.
+            'The encryptor Key Pair is invalid, ' .
             'please regenerate a new one with `spipu:encryptor:generate-key-pair` ' .
             'and save it in `spipu.core.encryptor.key_pair`'
         );

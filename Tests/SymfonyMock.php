@@ -147,7 +147,7 @@ class SymfonyMock extends TestCase
             ->method('prependExtensionConfig')
             ->willReturnCallback(
                 function ($name, array $config) {
-                    $name = 'prependConfig::'.$name;
+                    $name = 'prependConfig::' . $name;
                     SymfonyMock::$containerBuilderParameters[$name][] = $config;
                 }
             );
@@ -156,7 +156,7 @@ class SymfonyMock extends TestCase
             ->method('getExtensionConfig')
             ->willReturnCallback(
                 function ($name) {
-                    $name = 'prependConfig::'.$name;
+                    $name = 'prependConfig::' . $name;
                     return SymfonyMock::$containerBuilderParameters[$name];
                 }
             );
@@ -238,7 +238,7 @@ class SymfonyMock extends TestCase
                 function ($name, $parameters = []) {
                     $url = '/' . $name . '/';
                     if ($parameters && $query = http_build_query($parameters, '', '&', PHP_QUERY_RFC3986)) {
-                        $url .= '?'.strtr($query, ['%2F' => '/']);
+                        $url .= '?' . strtr($query, ['%2F' => '/']);
                     }
                     return $url;
                 }
