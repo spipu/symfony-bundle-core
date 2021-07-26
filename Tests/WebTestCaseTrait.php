@@ -67,15 +67,15 @@ trait WebTestCaseTrait
 
     /**
      * @param Crawler $crawler
-     * @param string $message
+     * @param string $expectedMessage
      * @return void
      */
-    protected function assertCrawlerHasAlert(Crawler $crawler, string $message): void
+    protected function assertCrawlerHasAlert(Crawler $crawler, string $expectedMessage): void
     {
-        $this->assertGreaterThan(
-            0,
-            $crawler->filter('div[role=alert]:contains("' . $message . '")')->count()
-        );
+        $alerts = $crawler->filter('div[role=alert]');
+        $this->assertEquals(1, $alerts->count());
+        $foundMessage = $alerts->first()->text();
+        $this->assertStringContainsString($expectedMessage, $foundMessage);
     }
 
     /**
