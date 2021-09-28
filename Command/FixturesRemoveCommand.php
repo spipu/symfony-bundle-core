@@ -70,6 +70,6 @@ class FixturesRemoveCommand extends Command
 
         $output->writeln("Fixture - Remove - Finished");
 
-        return 0;
+        return self::SUCCESS;
     }
 }

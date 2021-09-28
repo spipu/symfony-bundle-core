@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Spipu\CoreBundle\Command;
 
+use Exception;
 use Spipu\CoreBundle\Service\Encryptor;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -47,7 +48,7 @@ class EncryptorKeyPairCommand extends Command
      * @param OutputInterface $output
      *
      * @return int
-     * @throws \Exception
+     * @throws Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -60,6 +61,6 @@ class EncryptorKeyPairCommand extends Command
         $sfIo->success($keyPair);
         $sfIo->newLine();
 
-        return 0;
+        return self::SUCCESS;
     }
 }

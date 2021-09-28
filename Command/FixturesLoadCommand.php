@@ -70,6 +70,6 @@ class FixturesLoadCommand extends Command
 
         $output->writeln("Fixture - Load - Finished");
 
-        return 0;
+        return self::SUCCESS;
     }
 }

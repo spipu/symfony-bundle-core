@@ -35,23 +35,32 @@ class Encryptor implements EncryptorInterface
     /**
      * @param string $value
      * @return string
+     * @throws EncryptorException
      */
     public function encrypt(string $value): string
     {
-        $value = sodium_crypto_box_seal($value, sodium_crypto_box_publickey($this->getKeyPair()));
-        $value = $this->binToBase64($value);
-
-        return $value;
+        try {
+            $value = sodium_crypto_box_seal($value, sodium_crypto_box_publickey($this->getKeyPair()));
+            return $this->binToBase64($value);
+        } catch (SodiumException $e) {
+            throw new EncryptorException($e->getMessage(), $e->getCode());
+        }
     }
 
     /**
      * @param string $value
      * @return string|null
+     * @throws EncryptorException
      */
     public function decrypt(string $value): ?string
     {
-        $value = $this->base64ToBin($value);
-        $value = sodium_crypto_box_seal_open($value, $this->getKeyPair());
+        try {
+            $value = $this->base64ToBin($value);
+            $value = sodium_crypto_box_seal_open($value, $this->getKeyPair());
+        } catch (SodiumException $e) {
+            throw new EncryptorException($e->getMessage(), $e->getCode());
+        }
+
         if ($value === false) {
             return null;
         }

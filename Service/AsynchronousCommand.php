@@ -122,12 +122,10 @@ class AsynchronousCommand
         $cmd[] = '2>&1';
 
         // Launch the process.
-        $process = $this->processFactory->create(
+        return $this->processFactory->create(
             implode(' ', $cmd),
             $this->projectDir . DIRECTORY_SEPARATOR
         );
-
-        return $process;
     }
 
     /**
