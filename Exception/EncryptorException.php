@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Spipu\CoreBundle\Exception;
 
-class EncryptorException extends \Exception
+use Exception;
+
+class EncryptorException extends Exception
 {
 }

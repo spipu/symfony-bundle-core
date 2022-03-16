@@ -75,7 +75,7 @@ class Encryptor implements EncryptorInterface
      */
     private function binToBase64(string $value): string
     {
-        return (string) sodium_bin2base64($value, SODIUM_BASE64_VARIANT_ORIGINAL);
+        return sodium_bin2base64($value, SODIUM_BASE64_VARIANT_ORIGINAL);
     }
 
     /**
@@ -85,7 +85,7 @@ class Encryptor implements EncryptorInterface
      */
     private function base64ToBin(string $value): string
     {
-        return (string) sodium_base642bin($value, SODIUM_BASE64_VARIANT_ORIGINAL);
+        return sodium_base642bin($value, SODIUM_BASE64_VARIANT_ORIGINAL);
     }
 
     /**
@@ -100,7 +100,7 @@ class Encryptor implements EncryptorInterface
             throw $this->getKeyPairException();
         }
 
-        if (!$keyPair || empty($keyPair) || $keyPair === '') {
+        if (empty($keyPair)) {
             throw $this->getKeyPairException();
         }
 
