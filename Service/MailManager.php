@@ -97,7 +97,7 @@ class MailManager
 
     /**
      * @param string $sender
-     * @param $receiver
+     * @param mixed $receiver
      * @param string $subject
      * @param string $body
      * @return Email
