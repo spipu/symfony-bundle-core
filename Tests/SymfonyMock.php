@@ -45,6 +45,8 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\PasswordHasher\PasswordHasherInterface;
+use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\User\InMemoryUser;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -206,6 +208,7 @@ class SymfonyMock extends TestCase
         $request = new Request();
         $request->initialize($getValues);
         $request->setSession($session);
+        $request->attributes->set('_route', 'fake_route');
 
         $requestStack = $testCase->createMock(RequestStack::class);
         $requestStack->expects($testCase->any())->method('getCurrentRequest')->willReturn($request);
@@ -774,5 +777,23 @@ class SymfonyMock extends TestCase
     public static function getDoctrineQuery(TestCase $testCase)
     {
         return $testCase->createMock(AbstractQuery::class);
+    }
+
+    /**
+     * @param TestCase $testCase
+     * @return MockObject|Security
+     */
+    public static function getSecurity(TestCase $testCase)
+    {
+        $user = new InMemoryUser('42', 'pass');
+
+        $security = $testCase->createMock(Security::class);
+
+        $security
+            ->expects($testCase::any())
+            ->method('getUser')
+            ->willReturn($user);
+
+        return $security;
     }
 }
