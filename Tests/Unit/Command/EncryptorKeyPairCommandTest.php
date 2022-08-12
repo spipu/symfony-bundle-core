@@ -17,8 +17,10 @@ class EncryptorKeyPairCommandTest extends TestCase
 
         $command->run($inputMock, $outputMock);
 
-        $result = SymfonyMock::getConsoleOutputResult();
-        $this->assertSame(7, count($result));
-        $this->assertSame('Generate new Encryptor Key Pair.', $result[1]);
+        $result = array_values(array_filter(SymfonyMock::getConsoleOutputResult()));
+
+        $this->assertGreaterThanOrEqual(2, count($result));
+        $this->assertSame('Generate new Encryptor Key Pair.', $result[0]);
+        $this->assertStringStartsWith('[OK] ', $result[1]);
     }
 }
