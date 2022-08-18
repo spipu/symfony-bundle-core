@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of a Spipu Bundle
  *
@@ -8,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Spipu\CoreBundle\Service;
 
@@ -121,12 +122,10 @@ class AsynchronousCommand
         $cmd[] = '2>&1';
 
         // Launch the process.
-        $process = $this->processFactory->create(
+        return $this->processFactory->create(
             implode(' ', $cmd),
             $this->projectDir . DIRECTORY_SEPARATOR
         );
-
-        return $process;
     }
 
     /**

@@ -1,15 +1,25 @@
 <?php
+
+/**
+ * This file is part of a Spipu Bundle
+ *
+ * (c) Laurent Minguet
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Spipu\CoreBundle\Tests;
 
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Cache\CacheItemPoolInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use ReflectionClass;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use Symfony\Component\Console\Input\InputInterface;
@@ -34,14 +44,17 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
-use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\PasswordHasherInterface;
+use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\User\InMemoryUser;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Twig\Environment as Twig_Environment;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
 
 class SymfonyMock extends TestCase
 {
@@ -89,7 +102,7 @@ class SymfonyMock extends TestCase
         }
         $container->method('hasParameter')->willReturnMap($map);
 
-        /** @var ContainerInterface $container */
+        /** @var MockObject|ContainerInterface $container */
         return $container;
     }
 
@@ -136,7 +149,7 @@ class SymfonyMock extends TestCase
             ->method('prependExtensionConfig')
             ->willReturnCallback(
                 function ($name, array $config) {
-                    $name = 'prependConfig::'.$name;
+                    $name = 'prependConfig::' . $name;
                     SymfonyMock::$containerBuilderParameters[$name][] = $config;
                 }
             );
@@ -145,14 +158,14 @@ class SymfonyMock extends TestCase
             ->method('getExtensionConfig')
             ->willReturnCallback(
                 function ($name) {
-                    $name = 'prependConfig::'.$name;
+                    $name = 'prependConfig::' . $name;
                     return SymfonyMock::$containerBuilderParameters[$name];
                 }
             );
 
         $containerBuilder->method('getReflectionClass')->willReturnCallback(
             function (string $class, bool $throw = true) {
-                return new \ReflectionClass($class);
+                return new ReflectionClass($class);
             }
         );
 
@@ -164,14 +177,13 @@ class SymfonyMock extends TestCase
 
         $containerBuilder->method('getExtensions')->willReturn($extensions);
 
-        /** @var ContainerBuilder $containerBuilder */
+        /** @var MockObject|ContainerBuilder $containerBuilder */
         return $containerBuilder;
     }
 
     /**
      * @param TestCase $testCase
      * @return MockObject|ParameterBagInterface
-     * @throws \ReflectionException
      */
     public static function getParameterBag(TestCase $testCase)
     {
@@ -180,7 +192,7 @@ class SymfonyMock extends TestCase
         $parameterBag->method('resolveValue')->willReturnArgument(0);
         $parameterBag->method('unescapeValue')->willReturnArgument(0);
 
-        /** @var ParameterBagInterface $parameterBag */
+        /** @var MockObject|ParameterBagInterface $parameterBag */
         return $parameterBag;
     }
 
@@ -189,15 +201,20 @@ class SymfonyMock extends TestCase
      * @param array $getValues
      * @return MockObject|RequestStack
      */
-    public static function getRequestStack(TestCase $testCase, $getValues = [])
+    public static function getRequestStack(TestCase $testCase, array $getValues = [])
     {
+        $session = self::getSession($testCase);
+
         $request = new Request();
         $request->initialize($getValues);
+        $request->setSession($session);
+        $request->attributes->set('_route', 'fake_route');
 
         $requestStack = $testCase->createMock(RequestStack::class);
         $requestStack->expects($testCase->any())->method('getCurrentRequest')->willReturn($request);
+        $requestStack->expects($testCase->any())->method('getSession')->willReturn($session);
 
-        /** @var RequestStack $requestStack */
+        /** @var MockObject|RequestStack $requestStack */
         return $requestStack;
     }
 
@@ -205,7 +222,7 @@ class SymfonyMock extends TestCase
      * @param TestCase $testCase
      * @return Session
      */
-    public static function getSession(TestCase $testCase)
+    public static function getSession(TestCase $testCase): Session
     {
         return new Session(new MockArraySessionStorage());
     }
@@ -224,13 +241,13 @@ class SymfonyMock extends TestCase
                 function ($name, $parameters = []) {
                     $url = '/' . $name . '/';
                     if ($parameters && $query = http_build_query($parameters, '', '&', PHP_QUERY_RFC3986)) {
-                        $url .= '?'.strtr($query, ['%2F' => '/']);
+                        $url .= '?' . strtr($query, ['%2F' => '/']);
                     }
                     return $url;
                 }
             );
 
-        /** @var RouterInterface $router */
+        /** @var MockObject|RouterInterface $router */
         return $router;
     }
 
@@ -246,7 +263,7 @@ class SymfonyMock extends TestCase
             ->method('trans')
             ->will($testCase->returnArgument(0));
 
-        /** @var TranslatorInterface $translator */
+        /** @var MockObject|TranslatorInterface $translator */
         return $translator;
     }
 
@@ -256,10 +273,7 @@ class SymfonyMock extends TestCase
      */
     public static function getEventDispatcher(TestCase $testCase)
     {
-        $eventDispatcher = $testCase->createMock(EventDispatcherInterface::class);
-
-        /** @var EventDispatcherInterface $eventDispatcher */
-        return $eventDispatcher;
+        return $testCase->createMock(EventDispatcherInterface::class);
     }
 
     /**
@@ -281,25 +295,22 @@ class SymfonyMock extends TestCase
             ->method('isGranted')
             ->will($testCase->returnValueMap($values));
 
-        /** @var AuthorizationCheckerInterface $authorizationChecker */
+        /** @var MockObject|AuthorizationCheckerInterface $authorizationChecker */
         return $authorizationChecker;
     }
 
     /**
      * @param TestCase $testCase
-     * @return ClassMetadata|MockObject
+     * @return MockObject|ClassMetadata
      */
     public static function getEntityMetaData(TestCase $testCase)
     {
-        $metaData = $testCase->createMock(ClassMetadata::class);
-
-        /** @var ClassMetadata $metaData */
-        return $metaData;
+        return $testCase->createMock(ClassMetadata::class);
     }
 
     /**
      * @param TestCase $testCase
-     * @return EntityManagerInterface|MockObject
+     * @return MockObject|EntityManagerInterface
      */
     public static function getEntityManager(TestCase $testCase)
     {
@@ -318,7 +329,7 @@ class SymfonyMock extends TestCase
             ->method('createQueryBuilder')
             ->willReturn($queryBuilder);
 
-        /** @var EntityManagerInterface $entityManager */
+        /** @var MockObject|EntityManagerInterface $entityManager */
         return $entityManager;
     }
 
@@ -334,7 +345,7 @@ class SymfonyMock extends TestCase
             ->method('getManagerForClass')
             ->willReturn(SymfonyMock::getEntityManager($testCase));
 
-        /** @var ManagerRegistry $registry */
+        /** @var MockObject|ManagerRegistry $registry */
         return $registry;
     }
 
@@ -344,22 +355,16 @@ class SymfonyMock extends TestCase
      */
     public static function getTwig(TestCase $testCase)
     {
-        $twig = $testCase->createMock(Twig_Environment::class);
-
-        /** @var Twig_Environment $twig */
-        return $twig;
+        return $testCase->createMock(Twig_Environment::class);
     }
 
     /**
      * @param TestCase $testCase
-     * @return MockObject|CacheItemPoolInterface
+     * @return CacheItemPoolInterface
      */
     public static function getCachePool(TestCase $testCase)
     {
-        $cache = new ArrayAdapter(0, false);
-
-        /** @var CacheItemPoolInterface $cache */
-        return $cache;
+        return new ArrayAdapter(0, false);
     }
 
     /**
@@ -376,7 +381,7 @@ class SymfonyMock extends TestCase
         string $fileName = '/tmp/image.jpg',
         string $guessExtension = 'jpeg',
         string $mimeType = 'image/jpeg'
-    ) {
+    ): MockObject {
         $tempFile = new File($fileName, false);
 
         $file->method('getPath')->willReturn($tempFile->getPath());
@@ -430,7 +435,7 @@ class SymfonyMock extends TestCase
 
         self::prepareFile($testCase, $file, $fileName, $guessExtension, $mimeType);
 
-        /** @var File $file */
+        /** @var MockObject|File $file */
         return $file;
     }
 
@@ -459,7 +464,7 @@ class SymfonyMock extends TestCase
         $file->method('guessClientExtension')->willReturn(null);
         $file->method('isValid')->willReturn(true);
 
-        /** @var UploadedFile $file */
+        /** @var MockObject|UploadedFile $file */
         return $file;
     }
 
@@ -485,7 +490,7 @@ class SymfonyMock extends TestCase
         }
         $input->method('getOption')->willReturnMap($map);
 
-        /** @var InputInterface $input */
+        /** @var MockObject|InputInterface $input */
         return $input;
     }
 
@@ -498,10 +503,14 @@ class SymfonyMock extends TestCase
         self::$consoleOutputMessages = [];
 
         $output = $testCase->createMock(OutputInterface::class);
+        $formatter = $testCase->createMock(OutputFormatterInterface::class);
 
+        $formatter
+            ->method('isDecorated')
+            ->willReturn(false);
         $output
             ->method('getFormatter')
-            ->willReturn($testCase->createMock(OutputFormatterInterface::class));
+            ->willReturn($formatter);
 
         $output
             ->method('write')
@@ -526,7 +535,7 @@ class SymfonyMock extends TestCase
                 }
             );
 
-        /** @var OutputInterface $output */
+        /** @var MockObject|OutputInterface $output */
         return $output;
     }
 
@@ -563,14 +572,14 @@ class SymfonyMock extends TestCase
                 }
             );
 
-        /** @var SymfonyStyle $symfonyStyle */
+        /** @var MockObject|SymfonyStyle $symfonyStyle */
         return $symfonyStyle;
     }
 
     /**
      * @return string[]
      */
-    public static function getConsoleOutputResult()
+    public static function getConsoleOutputResult(): array
     {
         return self::$consoleOutputMessages;
     }
@@ -580,8 +589,10 @@ class SymfonyMock extends TestCase
      * @param string $tokenValue
      * @return FormFactoryInterface
      */
-    public static function getFormFactory(TestCase $testCase , string $tokenValue = 'mock_token_value')
-    {
+    public static function getFormFactory(
+        TestCase $testCase,
+        string $tokenValue = 'mock_token_value'
+    ): FormFactoryInterface {
         $tokenManager = $testCase->createMock(CsrfTokenManagerInterface::class);
         $tokenManager->method('getToken')->willReturn($tokenValue);
         $tokenManager->method('isTokenValid')->willReturn(true);
@@ -617,51 +628,51 @@ class SymfonyMock extends TestCase
             ->method('getToken')
             ->willReturn($token);
 
-        /** @var TokenStorageInterface $tokenStorage */
+        /** @var MockObject|TokenStorageInterface $tokenStorage */
         return $tokenStorage;
     }
 
     /**
      * @param TestCase $testCase
-     * @return MockObject|UserPasswordEncoderInterface
+     * @return MockObject|PasswordHasherInterface
      */
-    public static function getPasswordEncoder(TestCase $testCase)
+    public static function getPasswordHasher(TestCase $testCase)
     {
-        $encoder = $testCase->createMock(PasswordEncoderInterface::class);
+        $hasher = $testCase->createMock(PasswordHasherInterface::class);
 
-        $encoder
-            ->method('encodePassword')
+        $hasher
+            ->method('hash')
             ->willReturnCallback(
-                function ($raw, $salt) {
-                    return 'encoded_' . $raw;
+                function ($plainPassword) {
+                    return 'encoded_' . $plainPassword;
                 }
             );
 
-        $encoder
-            ->method('isPasswordValid')
+        $hasher
+            ->method('verify')
             ->willReturnCallback(
-                function ($encoded, $raw, $salt) use ($encoder) {
-                    return $encoded === $encoder->encodePassword($raw, $salt);
+                function (string $hashedPassword, string $plainPassword) use ($hasher) {
+                    return $hashedPassword === $hasher->hash($plainPassword);
                 }
             );
 
-        /** @var UserPasswordEncoderInterface $encoder */
-        return $encoder;
+        /** @var MockObject|PasswordHasherInterface $hasher */
+        return $hasher;
     }
 
     /**
      * @param TestCase $testCase
-     * @return MockObject|EncoderFactoryInterface
+     * @return MockObject|PasswordHasherFactoryInterface
      */
-    public static function getEncoderFactory(TestCase $testCase)
+    public static function getPasswordHasherFactory(TestCase $testCase)
     {
-        $encoderFactory = $testCase->createMock(EncoderFactoryInterface::class);
-        $encoderFactory
-            ->method('getEncoder')
-            ->willReturn(self::getPasswordEncoder($testCase));
+        $hasherFactory = $testCase->createMock(PasswordHasherFactoryInterface::class);
+        $hasherFactory
+            ->method('getPasswordHasher')
+            ->willReturn(self::getPasswordHasher($testCase));
 
-        /** @var EncoderFactoryInterface $encoderFactory */
-        return $encoderFactory;
+        /** @var MockObject|PasswordHasherFactoryInterface $hasherFactory */
+        return $hasherFactory;
     }
 
     /**
@@ -674,45 +685,44 @@ class SymfonyMock extends TestCase
         $userProvider = $testCase->createMock(UserProviderInterface::class);
         $userProvider
             ->expects($testCase->once())
-            ->method('loadUserByUsername')
-            ->with($user->getUsername())
+            ->method('loadUserByIdentifier')
+            ->with($user->getUserIdentifier())
             ->willReturn($user);
 
-        /** @var UserProviderInterface $userProvider */
+        /** @var MockObject|UserProviderInterface $userProvider */
         return $userProvider;
     }
 
     /**
      * @param TestCase $testCase
-     * @return MockObject|UserPasswordEncoderInterface
+     * @return MockObject|UserPasswordHasher
      */
-    public static function getUserPasswordEncoder(TestCase $testCase)
+    public static function getUserPasswordHasher(TestCase $testCase): UserPasswordHasher
     {
-        $encoder = $testCase->createMock(UserPasswordEncoderInterface::class);
+        $hasher = $testCase->createMock(UserPasswordHasher::class);
 
-        $encoder
-            ->method('encodePassword')
+        $hasher
+            ->method('hashPassword')
             ->willReturnCallback(
-                function (UserInterface $user, $plainPassword) {
+                function (PasswordAuthenticatedUserInterface $user, $plainPassword) {
                     return 'encoded_' . $plainPassword;
                 }
             );
 
-        $encoder
+        $hasher
             ->method('isPasswordValid')
             ->willReturnCallback(
-                function (UserInterface $user, $raw) use ($encoder) {
-                    return $user->getPassword() === $encoder->encodePassword($user, $raw);
+                function (PasswordAuthenticatedUserInterface $user, $raw) use ($hasher) {
+                    return $user->getPassword() === $hasher->hashPassword($user, $raw);
                 }
             );
 
-        /** @var UserPasswordEncoderInterface $encoder */
-        return $encoder;
+        return $hasher;
     }
 
     /**
      * @param TestCase $testCase
-     * @return QueryBuilder|MockObject
+     * @return MockObject|QueryBuilder
      */
     public static function getDoctrineQueryBuilder(TestCase $testCase)
     {
@@ -756,19 +766,34 @@ class SymfonyMock extends TestCase
             ->method('getQuery')
             ->willReturn(self::getDoctrineQuery($testCase));
 
-        /** @var QueryBuilder $builder */
+        /** @var MockObject|QueryBuilder $builder */
         return $builder;
     }
 
     /**
      * @param TestCase $testCase
-     * @return Query|MockObject
+     * @return MockObject|AbstractQuery
      */
     public static function getDoctrineQuery(TestCase $testCase)
     {
-        $query = $testCase->createMock(AbstractQuery::class);
+        return $testCase->createMock(AbstractQuery::class);
+    }
 
-        /** @var Query $query*/
-        return $query;
+    /**
+     * @param TestCase $testCase
+     * @return MockObject|Security
+     */
+    public static function getSecurity(TestCase $testCase)
+    {
+        $user = new InMemoryUser('42', 'pass');
+
+        $security = $testCase->createMock(Security::class);
+
+        $security
+            ->expects($testCase::any())
+            ->method('getUser')
+            ->willReturn($user);
+
+        return $security;
     }
 }

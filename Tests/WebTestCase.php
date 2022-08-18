@@ -1,4 +1,14 @@
 <?php
+
+/**
+ * This file is part of a Spipu Bundle
+ *
+ * (c) Laurent Minguet
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Spipu\CoreBundle\Tests;
 
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -20,7 +30,8 @@ class WebTestCase extends BaseWebTestCase
     {
         self::$clientCache = parent::createClient();
 
-        $this->prepareDataPrimer(self::$kernel, self::$container);
+        $container = self::getContainer();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+        $this->prepareDataPrimer(self::$kernel, $container);
     }
 
     /**

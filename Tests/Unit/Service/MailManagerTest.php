@@ -101,7 +101,7 @@ class MailManagerTest extends TestCase
         $this->assertSame(1, count($result));
         $this->assertSame($address1->getAddress(), $result[0]->getAddress());
 
-        $result = $service->prepareEmailAddresses($address1->getAddress().','.$address2->getAddress());
+        $result = $service->prepareEmailAddresses($address1->getAddress() . ',' . $address2->getAddress());
         $this->assertIsArray($result);
         $this->assertSame(2, count($result));
         $this->assertSame($address1->getAddress(), $result[0]->getAddress());

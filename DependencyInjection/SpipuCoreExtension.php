@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of a Spipu Bundle
  *
@@ -8,10 +9,11 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Spipu\CoreBundle\DependencyInjection;
 
+use Exception;
 use Spipu\CoreBundle\Entity\Role\Item;
 use Spipu\CoreBundle\Service\RoleDefinition;
 use Spipu\CoreBundle\Service\RoleDefinitionInterface;
@@ -26,13 +28,13 @@ final class SpipuCoreExtension extends Extension implements
     RolesHierarchyExtensionExtensionInterface
 {
     /**
-     * @param array $config
+     * @param array $configs
      * @param ContainerBuilder $container
      * @return void
-     * @throws \Exception
+     * @throws Exception
      * @SuppressWarnings(PMD.UnusedFormalParameter)
      */
-    public function load(array $config, ContainerBuilder $container): void
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yaml');

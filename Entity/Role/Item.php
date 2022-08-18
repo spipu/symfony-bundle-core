@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of a Spipu Bundle
  *
@@ -8,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Spipu\CoreBundle\Entity\Role;
 
 class Item
 {
-    const TYPE_PROFILE  = 'profile';
-    const TYPE_ROLE     = 'role';
+    public const TYPE_PROFILE  = 'profile';
+    public const TYPE_ROLE     = 'role';
 
     /**
      * @var Item[]

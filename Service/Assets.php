@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of a Spipu Bundle
  *
@@ -8,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Spipu\CoreBundle\Service;
 
@@ -100,7 +101,7 @@ class Assets
     {
         $defaultPublicDir = 'public';
 
-        $composerFilePath = $this->projectDir. DIRECTORY_SEPARATOR . 'composer.json';
+        $composerFilePath = $this->projectDir . DIRECTORY_SEPARATOR . 'composer.json';
         if (!$this->filesystem->isFile($composerFilePath)) {
             return $defaultPublicDir;
         }
@@ -127,7 +128,7 @@ class Assets
         $assets = $this->assets->get();
         foreach ($assets as $asset) {
             if ($sfIo !== null) {
-                $sfIo->text('  => '.$asset->getCode());
+                $sfIo->text('  => ' . $asset->getCode());
             }
             $this->installAsset($asset);
         }
@@ -247,7 +248,7 @@ class Assets
         $libDir = $this->targetDir . $asset->getCode() . DIRECTORY_SEPARATOR;
 
         $zipFilename = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'spipu_core_asset_' . $asset->getCode();
-        $zipFolder = $zipFilename.'.extract';
+        $zipFolder = $zipFilename . '.extract';
 
         try {
             $this->filesystem->copy($asset->getSource(), $zipFilename);

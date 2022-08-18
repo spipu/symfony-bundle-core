@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of a Spipu Bundle
  *
@@ -8,10 +9,11 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Spipu\CoreBundle\Command;
 
+use Exception;
 use Spipu\CoreBundle\Service\Assets;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -78,7 +80,7 @@ directory (e.g. the <comment>public</comment> directory).
      * @param OutputInterface $output
      *
      * @return int
-     * @throws \Exception
+     * @throws Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -91,6 +93,6 @@ directory (e.g. the <comment>public</comment> directory).
 
         $sfIo->newLine();
 
-        return 0;
+        return self::SUCCESS;
     }
 }

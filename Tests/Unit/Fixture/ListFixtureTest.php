@@ -19,7 +19,7 @@ class ListFixtureTest extends TestCase
         $outputMock->expects($this->any())->method('writeln')->will(
             $this->returnCallback(
                 function ($text, $options = 0) {
-                    $this->outputText .= $text.',';
+                    $this->outputText .= $text . ',';
                 }
             )
         );
@@ -83,7 +83,7 @@ class ListFixtureTest extends TestCase
         $outputMock->expects($this->any())->method('writeln')->will(
             $this->returnCallback(
                 function ($text, $options = 0) {
-                    $this->outputText .= $text.',';
+                    $this->outputText .= $text . ',';
                 }
             )
         );

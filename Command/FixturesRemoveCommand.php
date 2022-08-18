@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of a Spipu Bundle
  *
@@ -8,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Spipu\CoreBundle\Command;
 
@@ -69,6 +70,6 @@ class FixturesRemoveCommand extends Command
 
         $output->writeln("Fixture - Remove - Finished");
 
-        return 0;
+        return self::SUCCESS;
     }
 }

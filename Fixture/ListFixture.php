@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of a Spipu Bundle
  *
@@ -8,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Spipu\CoreBundle\Fixture;
 
@@ -84,7 +85,7 @@ class ListFixture
      * @param OutputInterface $output
      * @return void
      */
-    public function load(OutputInterface $output) : void
+    public function load(OutputInterface $output): void
     {
         foreach ($this->fixtures as $fixture) {
             $fixture->load($output);
@@ -95,7 +96,7 @@ class ListFixture
      * @param OutputInterface $output
      * @return void
      */
-    public function remove(OutputInterface $output) : void
+    public function remove(OutputInterface $output): void
     {
         foreach ($this->fixtures as $fixture) {
             $fixture->remove($output);

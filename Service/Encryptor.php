@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of a Spipu Bundle
  *
@@ -8,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Spipu\CoreBundle\Service;
 
@@ -34,23 +35,32 @@ class Encryptor implements EncryptorInterface
     /**
      * @param string $value
      * @return string
+     * @throws EncryptorException
      */
     public function encrypt(string $value): string
     {
-        $value = sodium_crypto_box_seal($value, sodium_crypto_box_publickey($this->getKeyPair()));
-        $value = $this->binToBase64($value);
-
-        return $value;
+        try {
+            $value = sodium_crypto_box_seal($value, sodium_crypto_box_publickey($this->getKeyPair()));
+            return $this->binToBase64($value);
+        } catch (SodiumException $e) {
+            throw new EncryptorException($e->getMessage(), $e->getCode());
+        }
     }
 
     /**
      * @param string $value
      * @return string|null
+     * @throws EncryptorException
      */
     public function decrypt(string $value): ?string
     {
-        $value = $this->base64ToBin($value);
-        $value = sodium_crypto_box_seal_open($value, $this->getKeyPair());
+        try {
+            $value = $this->base64ToBin($value);
+            $value = sodium_crypto_box_seal_open($value, $this->getKeyPair());
+        } catch (SodiumException $e) {
+            throw new EncryptorException($e->getMessage(), $e->getCode());
+        }
+
         if ($value === false) {
             return null;
         }
@@ -65,7 +75,7 @@ class Encryptor implements EncryptorInterface
      */
     private function binToBase64(string $value): string
     {
-        return (string) sodium_bin2base64($value, SODIUM_BASE64_VARIANT_ORIGINAL);
+        return sodium_bin2base64($value, SODIUM_BASE64_VARIANT_ORIGINAL);
     }
 
     /**
@@ -75,7 +85,7 @@ class Encryptor implements EncryptorInterface
      */
     private function base64ToBin(string $value): string
     {
-        return (string) sodium_base642bin($value, SODIUM_BASE64_VARIANT_ORIGINAL);
+        return sodium_base642bin($value, SODIUM_BASE64_VARIANT_ORIGINAL);
     }
 
     /**
@@ -90,7 +100,7 @@ class Encryptor implements EncryptorInterface
             throw $this->getKeyPairException();
         }
 
-        if (!$keyPair || empty($keyPair) || $keyPair === '') {
+        if (empty($keyPair)) {
             throw $this->getKeyPairException();
         }
 
@@ -103,7 +113,7 @@ class Encryptor implements EncryptorInterface
     private function getKeyPairException(): EncryptorException
     {
         return new EncryptorException(
-            'The encryptor Key Pair is invalid, '.
+            'The encryptor Key Pair is invalid, ' .
             'please regenerate a new one with `spipu:encryptor:generate-key-pair` ' .
             'and save it in `spipu.core.encryptor.key_pair`'
         );

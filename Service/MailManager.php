@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of a Spipu Bundle
  *
@@ -8,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Spipu\CoreBundle\Service;
 
@@ -22,7 +23,7 @@ use Twig\Error\Error as TwigError;
 
 class MailManager
 {
-    const MAIL_SEPARATOR = ',';
+    public const MAIL_SEPARATOR = ',';
 
     /**
      * @var MailerInterface
@@ -63,7 +64,7 @@ class MailManager
         $receiver,
         string $twigTemplate,
         array $twigParameters = []
-    ) : void {
+    ): void {
         $body = $this->twig->render($twigTemplate, $twigParameters);
 
         $this->sendHtmlMail($subject, $sender, $receiver, $body);
@@ -79,18 +80,40 @@ class MailManager
      */
     public function sendHtmlMail(string $subject, string $sender, $receiver, string $body): void
     {
-        $senderAddress     = $this->prepareEmailAddress($sender);
+        $message = $this->prepareHtmlMailMessage($sender, $receiver, $subject, $body);
+
+        $this->sendMail($message);
+    }
+
+    /**
+     * @param Email $message
+     * @return void
+     * @throws TransportExceptionInterface
+     */
+    public function sendMail(Email $message): void
+    {
+        $this->mailer->send($message);
+    }
+
+    /**
+     * @param string $sender
+     * @param mixed $receiver
+     * @param string $subject
+     * @param string $body
+     * @return Email
+     */
+    public function prepareHtmlMailMessage(string $sender, $receiver, string $subject, string $body): Email
+    {
+        $senderAddress = $this->prepareEmailAddress($sender);
         $receiverAddresses = $this->prepareEmailAddresses($receiver);
 
-        $message = (new Email())
+        return (new Email())
             ->from($senderAddress)
             ->to(...$receiverAddresses)
             ->priority(Email::PRIORITY_HIGH)
             ->subject($subject)
             ->text(strip_tags($body))
             ->html($body);
-
-        $this->mailer->send($message);
     }
 
     /**
@@ -116,7 +139,7 @@ class MailManager
     public function prepareEmailAddress($value): Address
     {
         if (is_string($value)) {
-            $value = Address::fromString($value);
+            $value = Address::create($value);
         }
 
         if (!is_object($value) || !($value instanceof Address)) {
