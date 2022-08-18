@@ -9,7 +9,6 @@
             "email": "contact@minguet.fr"
         }
     ],
-    "version": "1.0",
     "require": {
         "symfony/framework-bundle": "^4.4",
         "symfony/http-kernel": "^4.4",
