@@ -12,6 +12,8 @@
 namespace Spipu\CoreBundle\Tests;
 
 use App\Kernel as AppKernel;
+use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 class Kernel extends AppKernel
@@ -34,10 +36,15 @@ class Kernel extends AppKernel
 
     /**
      * @param ContainerConfigurator $container
+     * @param LoaderInterface $loader
+     * @param ContainerBuilder $builder
      */
-    protected function configureContainer(ContainerConfigurator $container): void
-    {
-        parent::configureContainer($container);
+    protected function configureContainer(
+        ContainerConfigurator $container,
+        LoaderInterface $loader,
+        ContainerBuilder $builder
+    ): void {
+        parent::configureContainer($container, $loader, $builder);
 
         $container->parameters()->set('APP_SETTINGS_DATABASE_URL', 'sqlite:///%kernel.project_dir%/var-test/test.sqlite');
     }
