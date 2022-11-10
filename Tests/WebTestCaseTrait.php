@@ -94,9 +94,9 @@ trait WebTestCaseTrait
     /**
      * @param Crawler $crawler
      * @param string $inputId
-     * @param string $fieldValue
+     * @param string|null $fieldValue
      */
-    protected function assertCrawlerHasInputValue(Crawler $crawler, string $inputId, string $fieldValue): void
+    protected function assertCrawlerHasInputValue(Crawler $crawler, string $inputId, ?string $fieldValue): void
     {
         $this->assertSame(
             $fieldValue,
