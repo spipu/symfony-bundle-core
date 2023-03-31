@@ -72,7 +72,7 @@ trait WebTestCaseTrait
      */
     protected function assertCrawlerHasAlert(Crawler $crawler, string $expectedMessage): void
     {
-        $alerts = $crawler->filter('div[role=alert]');
+        $alerts = $crawler->filter('main div[role=alert]');
         $this->assertEquals(1, $alerts->count());
         $foundMessage = $alerts->first()->text();
         $this->assertStringContainsString($expectedMessage, $foundMessage);
