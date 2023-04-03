@@ -11,8 +11,11 @@
 
 namespace Spipu\CoreBundle\Tests;
 
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Tester\CommandTester;
 
 class WebTestCase extends BaseWebTestCase
 {
@@ -52,5 +55,17 @@ class WebTestCase extends BaseWebTestCase
         self::$clientCache->restart();
 
         return self::$clientCache;
+    }
+
+    protected static function loadCommand(string $class, string $name): CommandTester
+    {
+        $kernel = static::bootKernel();
+        $application = new Application($kernel);
+
+        /** @var Command $command */
+        $command = static::getContainer()->get($class);
+        $application->add($command);
+
+        return new CommandTester($application->find($name));
     }
 }
