@@ -65,6 +65,12 @@ trait WebTestCaseTrait
         }
     }
 
+    protected function assertCrawlerHasNoAlert(Crawler $crawler): void
+    {
+        $alerts = $crawler->filter('main div[role=alert]');
+        $this->assertEquals(0, $alerts->count());
+    }
+
     /**
      * @param Crawler $crawler
      * @param string $expectedMessage
