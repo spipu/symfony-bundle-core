@@ -11,6 +11,7 @@
 
 namespace Spipu\CoreBundle\Tests;
 
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -329,8 +330,33 @@ class SymfonyMock extends TestCase
             ->method('createQueryBuilder')
             ->willReturn($queryBuilder);
 
+        $connection = self::getConnection($testCase);
+        $entityManager
+            ->method('getConnection')
+            ->willReturn($connection);
+
         /** @var MockObject|EntityManagerInterface $entityManager */
         return $entityManager;
+    }
+
+    /**
+     * @param TestCase $testCase
+     * @return Connection|MockObject
+     */
+    public static function getConnection(TestCase $testCase)
+    {
+        $connection = $testCase->createMock(Connection::class);
+
+        $connection
+            ->method('quote')
+            ->willReturnCallback(
+                function ($value) {
+                    return "'" . addslashes($value) . "'";
+                }
+            );
+
+        /** @var MockObject|Connection $registry */
+        return $connection;
     }
 
     /**
