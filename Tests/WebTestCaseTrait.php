@@ -63,6 +63,12 @@ trait WebTestCaseTrait
         } catch (Exception $e) {
             // Do Nothing, the fixture does not exists...
         }
+
+        try {
+            $listFixture->get('sample-configuration')->disable();
+        } catch (Exception $e) {
+            // Do Nothing, the fixture does not exists...
+        }
     }
 
     protected function assertCrawlerHasNoAlert(Crawler $crawler): void
