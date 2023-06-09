@@ -18,19 +18,9 @@ interface AssetInterface
     public const TYPE_VENDOR = 'vendor';
     public const TYPE_URL = 'url';
     public const TYPE_URL_ZIP = 'zip';
-    /**
-     * @return string
-     */
+
     public function getCode(): string;
-
-    /**
-     * @return string
-     */
     public function getSourceType(): string;
-
-    /**
-     * @return string
-     */
     public function getSource(): string;
 
     /**

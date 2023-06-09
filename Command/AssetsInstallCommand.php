@@ -23,21 +23,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class AssetsInstallCommand extends Command
 {
-    /**
-     * @var string
-     */
     protected static $defaultName = 'spipu:assets:install';
+    private Assets $assets;
 
-    /**
-     * @var Assets
-     */
-    private $assets;
-
-    /**
-     * AssetsInstallCommand constructor.
-     * @param Assets $assets
-     * @param string|null $name
-     */
     public function __construct(
         Assets $assets,
         string $name = null
@@ -47,11 +35,6 @@ class AssetsInstallCommand extends Command
         $this->assets = $assets;
     }
 
-    /**
-     * Configure the command
-     *
-     * @return void
-     */
     protected function configure(): void
     {
         parent::configure();
@@ -72,16 +55,6 @@ directory (e.g. the <comment>public</comment> directory).
         ;
     }
 
-
-    /**
-     * Execute the command
-     *
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     *
-     * @return int
-     * @throws Exception
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $sfIo = new SymfonyStyle($input, $output);

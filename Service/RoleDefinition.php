@@ -17,9 +17,6 @@ use Spipu\CoreBundle\Entity\Role\Item;
 
 class RoleDefinition implements RoleDefinitionInterface
 {
-    /**
-     * @return void
-     */
     public function buildDefinition(): void
     {
         Item::load('ROLE_USER')

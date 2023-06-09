@@ -23,13 +23,8 @@ class ListAsset
     /**
      * @var AssetInterface[]
      */
-    private $assets = [];
+    private array $assets = [];
 
-    /**
-     * ListAsset constructor.
-     * @param iterable $list
-     * @throws Exception
-     */
     public function __construct(iterable $list)
     {
         foreach ($list as $asset) {
@@ -39,11 +34,6 @@ class ListAsset
         $this->orderAssets();
     }
 
-    /**
-     * @param AssetInterface $asset
-     * @return void
-     * @throws Exception
-     */
     private function addAsset(AssetInterface $asset): void
     {
         $code = $asset->getCode();
@@ -55,9 +45,6 @@ class ListAsset
         $this->assets[$code] = $asset;
     }
 
-    /**
-     * @return void
-     */
     private function orderAssets(): void
     {
         ksort($this->assets);

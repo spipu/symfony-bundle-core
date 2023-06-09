@@ -18,40 +18,13 @@ use Symfony\Component\Process\Process;
 
 class AsynchronousCommand
 {
-    /**
-     * @var ProcessFactory
-     */
-    private $processFactory;
-
-    /**
-     * @var Filesystem
-     */
-    private $filesystem;
-
-    /**
-     * @var string
-     */
-    private $projectDir;
-
-    /**
-     * @var string
-     */
-    private $logsDir;
-
-    /**
-     * @var string
-     */
-    private $phpBin;
-
-    /**
-     * @var string
-     */
-    private $logFilename;
-
-    /**
-     * @var bool
-     */
-    private $disableLog = false;
+    private ProcessFactory $processFactory;
+    private Filesystem $filesystem;
+    private string $projectDir;
+    private string $logsDir;
+    private string $phpBin;
+    private string $logFilename;
+    private bool $disableLog = false;
 
     /**
      * AsynchronousCommand constructor.
@@ -78,21 +51,13 @@ class AsynchronousCommand
         $this->logFilename = $logFilename;
     }
 
-    /**
-     * @param bool $disableLog
-     * @return self
-     */
     public function setDisableLog(bool $disableLog): self
     {
         $this->disableLog = $disableLog;
 
         return $this;
     }
-    /**
-     * @param string $command
-     * @param array $parameters
-     * @return Process
-     */
+
     public function create(string $command, array $parameters): Process
     {
         // Escape parameters.
@@ -128,11 +93,6 @@ class AsynchronousCommand
         );
     }
 
-    /**
-     * @param string $command
-     * @param array $parameters
-     * @return bool
-     */
     public function execute(string $command, array $parameters): bool
     {
         $process = $this->create($command, $parameters);

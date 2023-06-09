@@ -20,17 +20,9 @@ class RoleDefinitionList
     /**
      * @var RoleDefinitionInterface[]
      */
-    private $roleDefinitions = [];
+    private array $roleDefinitions = [];
+    private bool $isAlreadyBuild = false;
 
-    /**
-     * @var bool
-     */
-    private $isAlreadyBuild = false;
-
-    /**
-     * Role constructor.
-     * @param iterable $roleDefinitions
-     */
     public function __construct(iterable $roleDefinitions)
     {
         foreach ($roleDefinitions as $roleDefinition) {
@@ -38,10 +30,6 @@ class RoleDefinitionList
         }
     }
 
-    /**
-     * @param RoleDefinitionInterface $roleDefinition
-     * @return void
-     */
     private function addRoleDefinition(RoleDefinitionInterface $roleDefinition): void
     {
         $this->roleDefinitions[] = $roleDefinition;
@@ -55,9 +43,6 @@ class RoleDefinitionList
         return $this->roleDefinitions;
     }
 
-    /**
-     * @return void
-     */
     public function buildDefinitions(): void
     {
         if (!$this->isAlreadyBuild) {

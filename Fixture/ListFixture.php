@@ -16,20 +16,13 @@ namespace Spipu\CoreBundle\Fixture;
 use Exception;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- * All the fixtures
- */
 class ListFixture
 {
     /**
      * @var FixtureInterface[]
      */
-    private $fixtures = [];
+    private array $fixtures = [];
 
-    /**
-     * ListFixture constructor.
-     * @param iterable $list
-     */
     public function __construct(iterable $list)
     {
         foreach ($list as $fixture) {
@@ -39,18 +32,11 @@ class ListFixture
         $this->orderFixtures();
     }
 
-    /**
-     * @param FixtureInterface $fixture
-     * @return void
-     */
     private function addFixture(FixtureInterface $fixture): void
     {
         $this->fixtures[$fixture->getCode()] = $fixture;
     }
 
-    /**
-     * @return void
-     */
     private function orderFixtures(): void
     {
         uasort($this->fixtures, [$this, 'sortFixtures']);
@@ -67,11 +53,6 @@ class ListFixture
         return $rowA->getOrder() <=> $rowB->getOrder();
     }
 
-    /**
-     * @param string $code
-     * @return FixtureInterface
-     * @throws Exception
-     */
     public function get(string $code): FixtureInterface
     {
         if (!array_key_exists($code, $this->fixtures)) {
@@ -81,10 +62,6 @@ class ListFixture
         return $this->fixtures[$code];
     }
 
-    /**
-     * @param OutputInterface $output
-     * @return void
-     */
     public function load(OutputInterface $output): void
     {
         foreach ($this->fixtures as $fixture) {
@@ -92,10 +69,6 @@ class ListFixture
         }
     }
 
-    /**
-     * @param OutputInterface $output
-     * @return void
-     */
     public function remove(OutputInterface $output): void
     {
         foreach ($this->fixtures as $fixture) {

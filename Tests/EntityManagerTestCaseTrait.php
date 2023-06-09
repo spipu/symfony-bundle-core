@@ -18,7 +18,7 @@ trait EntityManagerTestCaseTrait
     /**
      * @var EntityManagerInterface|null
      */
-    private $entityManager = null;
+    private ?EntityManagerInterface $entityManager = null;
 
     /**
      * @return EntityManagerInterface
