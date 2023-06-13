@@ -18,25 +18,13 @@ use Spipu\CoreBundle\Exception\EncryptorException;
 
 class Encryptor implements EncryptorInterface
 {
-    /**
-     * @var string
-     */
-    private $keyPair;
+    private string $keyPair;
 
-    /**
-     * Encryptor constructor.
-     * @param string $keyPair
-     */
     public function __construct(string $keyPair)
     {
         $this->keyPair = $keyPair;
     }
 
-    /**
-     * @param string $value
-     * @return string
-     * @throws EncryptorException
-     */
     public function encrypt(string $value): string
     {
         try {
@@ -47,11 +35,6 @@ class Encryptor implements EncryptorInterface
         }
     }
 
-    /**
-     * @param string $value
-     * @return string|null
-     * @throws EncryptorException
-     */
     public function decrypt(string $value): ?string
     {
         try {
@@ -68,30 +51,16 @@ class Encryptor implements EncryptorInterface
         return $value;
     }
 
-    /**
-     * @param string $value
-     * @return string
-     * @throws SodiumException
-     */
     private function binToBase64(string $value): string
     {
         return sodium_bin2base64($value, SODIUM_BASE64_VARIANT_ORIGINAL);
     }
 
-    /**
-     * @param string $value
-     * @return string
-     * @throws SodiumException
-     */
     private function base64ToBin(string $value): string
     {
         return sodium_base642bin($value, SODIUM_BASE64_VARIANT_ORIGINAL);
     }
 
-    /**
-     * @return string
-     * @throws EncryptorException
-     */
     private function getKeyPair(): string
     {
         try {
@@ -107,9 +76,6 @@ class Encryptor implements EncryptorInterface
         return $keyPair;
     }
 
-    /**
-     * @return EncryptorException
-     */
     private function getKeyPairException(): EncryptorException
     {
         return new EncryptorException(
@@ -119,10 +85,6 @@ class Encryptor implements EncryptorInterface
         );
     }
 
-    /**
-     * @return string
-     * @throws SodiumException
-     */
     public function generateKeyPair(): string
     {
         return $this->binToBase64(sodium_crypto_box_keypair());

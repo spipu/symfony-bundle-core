@@ -20,8 +20,5 @@ use Spipu\CoreBundle\Service\RoleDefinitionInterface;
  */
 interface RolesHierarchyExtensionExtensionInterface
 {
-    /**
-     * @return RoleDefinitionInterface
-     */
     public function getRolesHierarchy(): RoleDefinitionInterface;
 }

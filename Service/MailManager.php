@@ -25,21 +25,9 @@ class MailManager
 {
     public const MAIL_SEPARATOR = ',';
 
-    /**
-     * @var MailerInterface
-     */
-    private $mailer;
+    private MailerInterface $mailer;
+    private TwigEnvironment $twig;
 
-    /**
-     * @var TwigEnvironment
-     */
-    private $twig;
-
-    /**
-     * MailManager constructor.
-     * @param MailerInterface $mailer
-     * @param TwigEnvironment $twig
-     */
     public function __construct(
         MailerInterface $mailer,
         TwigEnvironment $twig
@@ -48,20 +36,10 @@ class MailManager
         $this->twig = $twig;
     }
 
-    /**
-     * @param string $subject
-     * @param string $sender
-     * @param mixed $receiver
-     * @param string $twigTemplate
-     * @param array $twigParameters
-     * @return void
-     * @throws TransportExceptionInterface
-     * @throws TwigError
-     */
     public function sendTwigMail(
         string $subject,
         string $sender,
-        $receiver,
+        mixed $receiver,
         string $twigTemplate,
         array $twigParameters = []
     ): void {
@@ -70,39 +48,19 @@ class MailManager
         $this->sendHtmlMail($subject, $sender, $receiver, $body);
     }
 
-    /**
-     * @param string $subject
-     * @param string $sender
-     * @param mixed $receiver
-     * @param string $body
-     * @return void
-     * @throws TransportExceptionInterface
-     */
-    public function sendHtmlMail(string $subject, string $sender, $receiver, string $body): void
+    public function sendHtmlMail(string $subject, string $sender, mixed $receiver, string $body): void
     {
         $message = $this->prepareHtmlMailMessage($sender, $receiver, $subject, $body);
 
         $this->sendMail($message);
     }
 
-    /**
-     * @param Email $message
-     * @return void
-     * @throws TransportExceptionInterface
-     */
     public function sendMail(Email $message): void
     {
         $this->mailer->send($message);
     }
 
-    /**
-     * @param string $sender
-     * @param mixed $receiver
-     * @param string $subject
-     * @param string $body
-     * @return Email
-     */
-    public function prepareHtmlMailMessage(string $sender, $receiver, string $subject, string $body): Email
+    public function prepareHtmlMailMessage(string $sender, mixed $receiver, string $subject, string $body): Email
     {
         $senderAddress = $this->prepareEmailAddress($sender);
         $receiverAddresses = $this->prepareEmailAddresses($receiver);
@@ -116,11 +74,7 @@ class MailManager
             ->html($body);
     }
 
-    /**
-     * @param mixed $values
-     * @return Address[]
-     */
-    public function prepareEmailAddresses($values): array
+    public function prepareEmailAddresses(mixed $values): array
     {
         $list = $this->convertAddressToArray($values);
 
@@ -136,7 +90,7 @@ class MailManager
      * @return Address
      * @SuppressWarnings(PMD.StaticAccess)
      */
-    public function prepareEmailAddress($value): Address
+    public function prepareEmailAddress(mixed $value): Address
     {
         if (is_string($value)) {
             $value = Address::create($value);
@@ -149,11 +103,7 @@ class MailManager
         return $value;
     }
 
-    /**
-     * @param mixed $values
-     * @return array
-     */
-    private function convertAddressToArray($values): array
+    private function convertAddressToArray(mixed $values): array
     {
         if (is_string($values)) {
             return explode(static::MAIL_SEPARATOR, $values);

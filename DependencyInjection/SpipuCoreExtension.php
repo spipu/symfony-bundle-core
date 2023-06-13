@@ -46,7 +46,7 @@ final class SpipuCoreExtension extends Extension implements
      * @return void
      * @SuppressWarnings(PMD.StaticAccess)
      */
-    public function prepend(ContainerBuilder $container)
+    public function prepend(ContainerBuilder $container): void
     {
         foreach ($container->getExtensions() as $extension) {
             if (!($extension instanceof RolesHierarchyExtensionExtensionInterface)) {

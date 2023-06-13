@@ -11,7 +11,7 @@ class ListFixtureTest extends TestCase
     /**
      * @var string
      */
-    private $outputText = '';
+    private string $outputText = '';
 
     public function testLoad()
     {

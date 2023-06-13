@@ -20,16 +20,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class FixturesRemoveCommand extends Command
 {
-    /**
-     * @var ListFixture
-     */
-    private $listFixture;
+    private ListFixture $listFixture;
 
-    /**
-     * ConfigurationCommand constructor.
-     * @param ListFixture $listFixture
-     * @param null|string $name
-     */
     public function __construct(
         ListFixture $listFixture,
         ?string $name = null
@@ -39,11 +31,6 @@ class FixturesRemoveCommand extends Command
         $this->listFixture = $listFixture;
     }
 
-    /**
-     * Configure the command
-     *
-     * @return void
-     */
     protected function configure(): void
     {
         $this

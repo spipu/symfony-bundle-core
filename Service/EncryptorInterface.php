@@ -15,15 +15,7 @@ namespace Spipu\CoreBundle\Service;
 
 interface EncryptorInterface
 {
-    /**
-     * @param string $value
-     * @return string
-     */
     public function encrypt(string $value): string;
 
-    /**
-     * @param string $value
-     * @return string|null
-     */
     public function decrypt(string $value): ?string;
 }

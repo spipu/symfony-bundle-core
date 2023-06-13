@@ -20,30 +20,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class Assets
 {
-    /**
-     * @var Filesystem
-     */
-    private $filesystem;
-
-    /**
-     * @var FinderFactory
-     */
-    private $finderFactory;
-
-    /**
-     * @var ListAsset
-     */
-    private $assets;
-
-    /**
-     * @var string
-     */
-    private $projectDir;
-
-    /**
-     * @var string
-     */
-    private $targetDir;
+    private Filesystem $filesystem;
+    private FinderFactory $finderFactory;
+    private ListAsset $assets;
+    private string $projectDir;
+    private string $targetDir = '';
 
     /**
      * Assets constructor.

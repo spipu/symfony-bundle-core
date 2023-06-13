@@ -15,8 +15,5 @@ namespace Spipu\CoreBundle\Service;
 
 interface RoleDefinitionInterface
 {
-    /**
-     * @return void
-     */
     public function buildDefinition(): void;
 }

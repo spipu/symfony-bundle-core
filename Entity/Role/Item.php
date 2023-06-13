@@ -18,70 +18,37 @@ class Item
     public const TYPE_PROFILE  = 'profile';
     public const TYPE_ROLE     = 'role';
 
-    /**
-     * @var Item[]
-     */
-    private static $repository = [];
-
-    /**
-     * @var string
-     */
-    private $code;
-
-    /**
-     * @var string
-     */
-    private $label;
-
-    /**
-     * @var string
-     */
-    private $type = self::TYPE_ROLE;
-
-    /**
-     * @var int
-     */
-    private $weight = 10;
+    private string $code;
+    private string $label = '';
+    private string $type = self::TYPE_ROLE;
+    private int $weight = 10;
+    private ?string $purpose = 'admin';
 
     /**
      * @var Item[]
      */
-    private $children = [];
+    private array $children = [];
 
     /**
-     * @var string|null
+     * @var Item[]
      */
-    private $purpose = 'admin';
+    private static array $repository = [];
 
-    /**
-     * Item constructor.
-     * @param string $code
-     */
     public function __construct(string $code)
     {
         $this->code = $code;
     }
 
-    /**
-     * @return string
-     */
     public function getCode(): string
     {
         return $this->code;
     }
 
-    /**
-     * @return string
-     */
     public function getLabel(): string
     {
         return $this->label;
     }
 
-    /**
-     * @param string $label
-     * @return self
-     */
     public function setLabel(string $label): self
     {
         $this->label = $label;
@@ -89,18 +56,11 @@ class Item
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getType(): string
     {
         return $this->type;
     }
 
-    /**
-     * @param string $type
-     * @return $this
-     */
     public function setType(string $type): self
     {
         $this->type = $type;
@@ -108,18 +68,11 @@ class Item
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getWeight(): int
     {
         return $this->weight;
     }
 
-    /**
-     * @param int $weight
-     * @return self
-     */
     public function setWeight(int $weight): self
     {
         $this->weight = $weight;
@@ -127,18 +80,11 @@ class Item
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getPurpose(): ?string
     {
         return $this->purpose;
     }
 
-    /**
-     * @param string|null $purpose
-     * @return $this
-     */
     public function setPurpose(?string $purpose): self
     {
         $this->purpose = $purpose;
@@ -154,10 +100,6 @@ class Item
         return $this->children;
     }
 
-    /**
-     * @param string $code
-     * @return self
-     */
     public function addChild(string $code): self
     {
         $child = self::load($code);
@@ -167,10 +109,6 @@ class Item
         return $this;
     }
 
-    /**
-     * @param string $code
-     * @return Item
-     */
     public static function load(string $code): Item
     {
         if (!array_key_exists($code, self::$repository)) {
@@ -187,9 +125,6 @@ class Item
         return self::$repository;
     }
 
-    /**
-     * @return void
-     */
     public static function resetAll(): void
     {
         self::$repository = [];

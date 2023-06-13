@@ -17,12 +17,6 @@ use ZipArchive;
 
 class Filesystem extends \Symfony\Component\Filesystem\Filesystem
 {
-    /**
-     * Checks if a path is a directory.
-     *
-     * @param string $filename
-     * @return bool
-     */
     public function isDir(string $filename): bool
     {
         if (!$this->exists($filename)) {
@@ -32,12 +26,6 @@ class Filesystem extends \Symfony\Component\Filesystem\Filesystem
         return is_dir($filename);
     }
 
-    /**
-     * Checks if a path is a file.
-     *
-     * @param string $filename
-     * @return bool
-     */
     public function isFile(string $filename): bool
     {
         if (!$this->exists($filename)) {
@@ -47,20 +35,11 @@ class Filesystem extends \Symfony\Component\Filesystem\Filesystem
         return is_file($filename);
     }
 
-    /**
-     * @param string $filename
-     * @return string
-     */
     public function getContent(string $filename): string
     {
         return file_get_contents($filename);
     }
 
-    /**
-     * @param string $zipFilename
-     * @param string $folderDestination
-     * @return bool
-     */
     public function unZip(string $zipFilename, string $folderDestination): bool
     {
         $zip = new ZipArchive();

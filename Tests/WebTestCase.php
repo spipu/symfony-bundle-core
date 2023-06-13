@@ -40,7 +40,7 @@ class WebTestCase extends BaseWebTestCase
     /**
      * @return string The Kernel class name
      */
-    protected static function getKernelClass()
+    protected static function getKernelClass(): string
     {
         return Kernel::class;
     }

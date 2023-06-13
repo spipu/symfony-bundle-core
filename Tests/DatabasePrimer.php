@@ -16,7 +16,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 class DatabasePrimer
 {
-    public static function prime(KernelInterface $kernel)
+    public static function prime(KernelInterface $kernel): void
     {
         // Get the entity manager from the service container
         $entityManager = $kernel->getContainer()->get('doctrine.orm.entity_manager');

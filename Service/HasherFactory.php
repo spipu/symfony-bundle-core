@@ -18,10 +18,6 @@ use Symfony\Component\PasswordHasher\Hasher\NativePasswordHasher;
 
 class HasherFactory
 {
-    /**
-     * @return PasswordHasherInterface
-     * @SuppressWarnings(PMD.StaticAccess)
-     */
     public function create(): PasswordHasherInterface
     {
         return new NativePasswordHasher();
