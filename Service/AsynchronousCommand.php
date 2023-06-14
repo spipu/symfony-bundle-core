@@ -96,6 +96,7 @@ class AsynchronousCommand
     public function execute(string $command, array $parameters): bool
     {
         $process = $this->create($command, $parameters);
+        $process->setOptions(['create_new_console' => true]);
         $process->start();
 
         return true;
