@@ -33,7 +33,7 @@ class RoleDefinition implements RoleDefinitionInterface
 
         Item::load('ROLE_SUPER_ADMIN')
             ->setLabel('spipu.core.role.super_admin')
-            ->setType(item::TYPE_PROFILE)
+            ->setType(Item::TYPE_PROFILE)
             ->setWeight(90)
             ->addChild('ROLE_ADMIN');
     }
