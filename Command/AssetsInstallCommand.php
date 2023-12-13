@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Spipu\CoreBundle\Command;
 
-use Exception;
 use Spipu\CoreBundle\Service\Assets;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -23,7 +22,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class AssetsInstallCommand extends Command
 {
-    protected static $defaultName = 'spipu:assets:install';
     private Assets $assets;
 
     public function __construct(
@@ -40,6 +38,7 @@ class AssetsInstallCommand extends Command
         parent::configure();
 
         $this
+            ->setName('spipu:assets:install')
             ->setDefinition(array(
                 new InputArgument('target', InputArgument::OPTIONAL, 'The target directory', ''),
             ))

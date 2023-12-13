@@ -222,7 +222,7 @@ class Assets
             throw new Exception('The source must be a zip url');
         }
 
-        if (substr($asset->getSource(), -4) !== '.zip') {
+        if (!str_ends_with($asset->getSource(), '.zip')) {
             throw new Exception('The source must be a zip url');
         }
 

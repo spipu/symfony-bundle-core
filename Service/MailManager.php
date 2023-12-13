@@ -14,12 +14,10 @@ declare(strict_types=1);
 namespace Spipu\CoreBundle\Service;
 
 use Symfony\Component\Mailer\Exception\InvalidArgumentException;
-use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Twig\Environment as TwigEnvironment;
-use Twig\Error\Error as TwigError;
 
 class MailManager
 {

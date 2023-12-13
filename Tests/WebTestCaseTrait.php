@@ -61,13 +61,13 @@ trait WebTestCaseTrait
         try {
             $listFixture->get('sample-user')->setMaxSteps(2);
         } catch (Exception $e) {
-            // Do Nothing, the fixture does not exists...
+            // Do Nothing, the fixture does not exist...
         }
 
         try {
             $listFixture->get('sample-configuration')->disable();
         } catch (Exception $e) {
-            // Do Nothing, the fixture does not exists...
+            // Do Nothing, the fixture does not exist...
         }
     }
 

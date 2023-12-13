@@ -11,11 +11,11 @@
     ],
     "require": {
         "php": "^8.1",
-        "symfony/framework-bundle": "^5.4",
-        "symfony/http-kernel": "^5.4",
-        "symfony/mailer": "^5.4",
-        "symfony/mime": "^5.4",
-        "symfony/translation": "^5.4"
+        "symfony/framework-bundle": "^6.4",
+        "symfony/http-kernel": "^6.4",
+        "symfony/mailer": "^6.4",
+        "symfony/mime": "^6.4",
+        "symfony/translation": "^6.4"
     },
     "autoload": {
         "psr-4": {

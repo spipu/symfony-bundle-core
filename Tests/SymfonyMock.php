@@ -46,11 +46,12 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\PasswordHasher\PasswordHasherInterface;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\User\InMemoryUser;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
@@ -279,22 +280,26 @@ class SymfonyMock extends TestCase
 
     /**
      * @param TestCase $testCase
-     * @param array $values
+     * @param array $grantedRoles
      * @return MockObject|AuthorizationCheckerInterface
      */
-    public static function getAuthorizationChecker(TestCase $testCase, array $values = [])
+    public static function getAuthorizationChecker(TestCase $testCase, array $grantedRoles = [])
     {
-        if ($values === []) {
-            $values = [
-                ['IS_AUTHENTICATED_REMEMBERED', null, true],
-                ['ROLE_GOOD', null, true],
+        if ($grantedRoles === []) {
+            $grantedRoles = [
+                'IS_AUTHENTICATED_REMEMBERED',
+                'ROLE_GOOD',
             ];
         }
         $authorizationChecker = $testCase->createMock(AuthorizationCheckerInterface::class);
         $authorizationChecker
             ->expects($testCase->any())
             ->method('isGranted')
-            ->will($testCase->returnValueMap($values));
+            ->willReturnCallback(
+                function (mixed $attribute, mixed $subject = null) use ($grantedRoles) {
+                    return (is_string($attribute) && in_array($attribute, $grantedRoles));
+                }
+            );
 
         /** @var MockObject|AuthorizationCheckerInterface $authorizationChecker */
         return $authorizationChecker;
@@ -620,7 +625,11 @@ class SymfonyMock extends TestCase
         string $tokenValue = 'mock_token_value'
     ): FormFactoryInterface {
         $tokenManager = $testCase->createMock(CsrfTokenManagerInterface::class);
-        $tokenManager->method('getToken')->willReturn($tokenValue);
+        $tokenManager->method('getToken')->willReturnCallback(
+            function (string $tokenId) use ($tokenValue) {
+                return new CsrfToken($tokenId, $tokenValue);
+            }
+        );
         $tokenManager->method('isTokenValid')->willReturn(true);
 
         /** @var CsrfTokenManagerInterface $tokenManager */

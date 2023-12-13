@@ -21,14 +21,8 @@ class WebTestCase extends BaseWebTestCase
 {
     use WebTestCaseTrait;
 
-    /**
-     * @var KernelBrowser
-     */
-    protected static $clientCache;
+    protected static ?KernelBrowser $clientCache = null;
 
-    /**
-     * @return void
-     */
     public function setUp(): void
     {
         self::$clientCache = parent::createClient();
@@ -37,20 +31,12 @@ class WebTestCase extends BaseWebTestCase
         $this->prepareDataPrimer(self::$kernel, $container);
     }
 
-    /**
-     * @return string The Kernel class name
-     */
     protected static function getKernelClass(): string
     {
         return Kernel::class;
     }
 
-    /**
-     * @param array $options
-     * @param array $server
-     * @return KernelBrowser
-     */
-    protected static function createClient(array $options = [], array $server = [])
+    protected static function createClient(array $options = [], array $server = []): KernelBrowser
     {
         self::$clientCache->restart();
 
