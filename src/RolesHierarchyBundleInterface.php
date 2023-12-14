@@ -11,14 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Spipu\CoreBundle\DependencyInjection;
+namespace Spipu\CoreBundle;
 
 use Spipu\CoreBundle\Service\RoleDefinitionInterface;
 
-/**
- * @SuppressWarnings(PMD.LongClassName)
- */
-interface RolesHierarchyExtensionExtensionInterface
+interface RolesHierarchyBundleInterface
 {
-    public function getRolesHierarchy(): RoleDefinitionInterface;
+    public function getRolesHierarchy(): ?RoleDefinitionInterface;
 }

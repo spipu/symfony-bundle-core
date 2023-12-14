@@ -19,7 +19,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Spipu\\CoreBundle\\": "./"
+            "Spipu\\CoreBundle\\": "./src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Spipu\\CoreBundle\\Tests\\": "tests/"
         }
     }
 }

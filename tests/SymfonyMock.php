@@ -29,6 +29,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Csrf\CsrfExtension;
@@ -181,6 +183,25 @@ class SymfonyMock extends TestCase
 
         /** @var MockObject|ContainerBuilder $containerBuilder */
         return $containerBuilder;
+    }
+
+    /**
+     * @param TestCase $testCase
+     * @return ContainerConfigurator
+     */
+    public static function getContainerConfigurator(TestCase $testCase)
+    {
+        $phpFileLoader = $testCase->createMock(PhpFileLoader::class);
+        $instanceOf = [];
+
+        return new ContainerConfigurator(
+            self::getContainerBuilder($testCase),
+            $phpFileLoader,
+            $instanceOf,
+            '',
+            '',
+            null
+        );
     }
 
     /**
