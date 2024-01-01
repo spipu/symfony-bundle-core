@@ -23,8 +23,8 @@ class Environment
         $this->currentCode = $currentCode;
 
         $this->setColor(self::ENV_DEV, 'secondary');
-        $this->setColor(self::ENV_DEV, 'danger');
-        $this->setColor(self::ENV_DEV, 'primary');
+        $this->setColor(self::ENV_PREPROD, 'danger');
+        $this->setColor(self::ENV_PROD, 'primary');
     }
 
     protected function setColor(string $code, string $color): void
