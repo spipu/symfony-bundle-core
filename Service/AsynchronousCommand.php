@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Spipu\CoreBundle\Service;
 
+use Spipu\CoreBundle\Exception\AsynchronousCommandException;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Process\Exception\RuntimeException;
 use Symfony\Component\Process\Process;
 
 class AsynchronousCommand
@@ -97,7 +99,15 @@ class AsynchronousCommand
     {
         $process = $this->create($command, $parameters);
         $process->setOptions(['create_new_console' => true]);
-        $process->start();
+        try {
+            $process->start();
+        } catch (RuntimeException $e) {
+            if ($e->getMessage() === 'Unable to launch a new process.') {
+                throw new AsynchronousCommandException($e->getMessage());
+            }
+
+            throw $e;
+        }
 
         return true;
     }
