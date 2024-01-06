@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Spareka\CoreBundle\Service;
+namespace Spipu\CoreBundle\Service;
 
 use Spipu\CoreBundle\Service\SluggerInterface;
 use Symfony\Component\String\Slugger\AsciiSlugger;
