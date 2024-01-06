@@ -2,9 +2,11 @@
 namespace Spipu\CoreBundle\Tests\Unit\Service;
 
 use PHPUnit\Framework\TestCase;
+use Spipu\CoreBundle\Exception\AsynchronousCommandException;
 use Spipu\CoreBundle\Service\AsynchronousCommand;
 use Spipu\CoreBundle\Service\ProcessFactory;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Process\Exception\RuntimeException;
 use Symfony\Component\Process\Process;
 
 class AsynchronousCommandTest extends TestCase
@@ -130,5 +132,73 @@ class AsynchronousCommandTest extends TestCase
         );
 
         $this->assertTrue($service->execute('test:mock', []));
+    }
+
+    public function testExecuteKoNoProcess()
+    {
+        $process = $this->createMock(Process::class);
+        $process
+            ->expects($this->once())
+            ->method('start')
+            ->willThrowException(new RuntimeException('Unable to launch a new process.'))
+        ;
+
+
+        $processFactory = $this->createMock(ProcessFactory::class);
+        $processFactory
+            ->expects($this->once())
+            ->method('create')
+            ->with("my-php bin/console 'test:mock' >> /log/dir/my-file.log 2>&1", "/project/dir/")
+            ->willReturn($process);
+
+        $fileSystem = $this->createMock(Filesystem::class);
+
+        /** @var ProcessFactory $processFactory */
+        /** @var Filesystem $fileSystem */
+        $service = new AsynchronousCommand(
+            $processFactory,
+            $fileSystem,
+            '/project/dir',
+            '/log/dir',
+            'my-php',
+            'my-file.log'
+        );
+
+        $this->expectException(AsynchronousCommandException::class);
+        $service->execute('test:mock', []);
+    }
+
+    public function testExecuteKoOther()
+    {
+        $process = $this->createMock(Process::class);
+        $process
+            ->expects($this->once())
+            ->method('start')
+            ->willThrowException(new RuntimeException('Other pb.'))
+        ;
+
+
+        $processFactory = $this->createMock(ProcessFactory::class);
+        $processFactory
+            ->expects($this->once())
+            ->method('create')
+            ->with("my-php bin/console 'test:mock' >> /log/dir/my-file.log 2>&1", "/project/dir/")
+            ->willReturn($process);
+
+        $fileSystem = $this->createMock(Filesystem::class);
+
+        /** @var ProcessFactory $processFactory */
+        /** @var Filesystem $fileSystem */
+        $service = new AsynchronousCommand(
+            $processFactory,
+            $fileSystem,
+            '/project/dir',
+            '/log/dir',
+            'my-php',
+            'my-file.log'
+        );
+
+        $this->expectException(RuntimeException::class);
+        $service->execute('test:mock', []);
     }
 }
