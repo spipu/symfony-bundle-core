@@ -33,6 +33,9 @@ services:
         arguments:
             - '%spipu.core.encryptor.key_pair%'
 
+    Spipu\CoreBundle\Service\SluggerInterface:
+        class: Spipu\CoreBundle\Service\Slugger
+
     Spipu\CoreBundle\Service\Filesystem:
         arguments: []
 
