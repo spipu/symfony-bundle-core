@@ -12,9 +12,9 @@
 namespace Spipu\CoreBundle\Tests;
 
 use Doctrine\DBAL\Connection;
-use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -828,11 +828,11 @@ class SymfonyMock extends TestCase
 
     /**
      * @param TestCase $testCase
-     * @return MockObject|AbstractQuery
+     * @return MockObject|Query
      */
     public static function getDoctrineQuery(TestCase $testCase)
     {
-        return $testCase->createMock(AbstractQuery::class);
+        return $testCase->createMock(Query::class);
     }
 
     /**

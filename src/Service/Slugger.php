@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Spipu\CoreBundle\Service;
 
-use Spipu\CoreBundle\Service\SluggerInterface;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 use Symfony\Component\String\Slugger\SluggerInterface as SymfonySluggerInterface;
 
