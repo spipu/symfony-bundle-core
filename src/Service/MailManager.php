@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Spipu\CoreBundle\Service;
 
+use Spipu\CoreBundle\Model\MailHeader;
 use Symfony\Component\Mailer\Exception\InvalidArgumentException;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
@@ -39,16 +40,26 @@ class MailManager
         string $sender,
         mixed $receiver,
         string $twigTemplate,
-        array $twigParameters = []
+        array $twigParameters = [],
+        array $headers = []
     ): void {
         $body = $this->twig->render($twigTemplate, $twigParameters);
 
-        $this->sendHtmlMail($subject, $sender, $receiver, $body);
+        $this->sendHtmlMail($subject, $sender, $receiver, $body, $headers);
     }
 
-    public function sendHtmlMail(string $subject, string $sender, mixed $receiver, string $body): void
-    {
+    public function sendHtmlMail(
+        string $subject,
+        string $sender,
+        mixed $receiver,
+        string $body,
+        array $headers = []
+    ): void {
         $message = $this->prepareHtmlMailMessage($sender, $receiver, $subject, $body);
+
+        foreach ($headers as $header) {
+            $this->addHeaderToMessage($message, $header);
+        }
 
         $this->sendMail($message);
     }
@@ -116,5 +127,10 @@ class MailManager
         }
 
         throw new InvalidArgumentException('The provided value is not a valid address');
+    }
+
+    private function addHeaderToMessage(Email $message, MailHeader $header): void
+    {
+        $message->getHeaders()->addHeader($header->getKey(), $header->getValue());
     }
 }
