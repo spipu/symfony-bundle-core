@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Spipu\CoreBundle\Service;
 
-class Environment
+class Environment implements EnvironmentInterface
 {
     public const ENV_DEV     = 'dev';
     public const ENV_PREPROD = 'preprod';
