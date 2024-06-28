@@ -95,8 +95,6 @@ class MailManager
     }
 
     /**
-     * @param mixed $value
-     * @return Address
      * @SuppressWarnings(PMD.StaticAccess)
      */
     public function prepareEmailAddress(mixed $value): Address
