@@ -43,9 +43,9 @@ class MailManager
         array $twigParameters = [],
         array $headers = []
     ): void {
-        $body = $this->twig->render($twigTemplate, $twigParameters);
-
-        $this->sendHtmlMail($subject, $sender, $receiver, $body, $headers);
+        $message = $this->prepareTwigMailMessage($sender, $receiver, $subject, $twigTemplate, $twigParameters);
+        $this->addHeadersToMessage($message, $headers);
+        $this->sendMail($message);
     }
 
     public function sendHtmlMail(
@@ -56,11 +56,7 @@ class MailManager
         array $headers = []
     ): void {
         $message = $this->prepareHtmlMailMessage($sender, $receiver, $subject, $body);
-
-        foreach ($headers as $header) {
-            $this->addHeaderToMessage($message, $header);
-        }
-
+        $this->addHeadersToMessage($message, $headers);
         $this->sendMail($message);
     }
 
@@ -69,8 +65,23 @@ class MailManager
         $this->mailer->send($message);
     }
 
-    public function prepareHtmlMailMessage(string $sender, mixed $receiver, string $subject, string $body): Email
-    {
+    public function prepareTwigMailMessage(
+        string $sender,
+        mixed $receiver,
+        string $subject,
+        string $bodyTwigTemplate,
+        array $bodyTwigParameters = []
+    ): Email {
+        $body = $this->twig->render($bodyTwigTemplate, $bodyTwigParameters);
+        return$this->prepareHtmlMailMessage($sender, $receiver, $subject, $body);
+    }
+
+    public function prepareHtmlMailMessage(
+        string $sender,
+        mixed $receiver,
+        string $subject,
+        string $body
+    ): Email {
         $senderAddress = $this->prepareEmailAddress($sender);
         $receiverAddresses = $this->prepareEmailAddresses($receiver);
 
@@ -125,6 +136,13 @@ class MailManager
         }
 
         throw new InvalidArgumentException('The provided value is not a valid address');
+    }
+
+    public function addHeadersToMessage(Email $message, array $headers = []): void
+    {
+        foreach ($headers as $header) {
+            $this->addHeaderToMessage($message, $header);
+        }
     }
 
     private function addHeaderToMessage(Email $message, MailHeader $header): void
