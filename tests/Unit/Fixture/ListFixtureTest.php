@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Spipu\CoreBundle\Tests\Unit\Fixture;
 
 use PHPUnit\Framework\TestCase;
@@ -13,7 +16,7 @@ class ListFixtureTest extends TestCase
      */
     private string $outputText = '';
 
-    public function testLoad()
+    public function testLoad(): void
     {
         $outputMock = $this->createMock(OutputInterface::class);
         $outputMock->expects($this->any())->method('writeln')->will(
@@ -35,7 +38,6 @@ class ListFixtureTest extends TestCase
                 }
             )
         );
-
 
         $fixtureB = $this->createMock(FixtureInterface::class);
         $fixtureB->expects($this->any())->method('getCode')->willReturn('test_b');
@@ -77,7 +79,7 @@ class ListFixtureTest extends TestCase
         $service->get('wrong_code');
     }
 
-    public function testRemove()
+    public function testRemove(): void
     {
         $outputMock = $this->createMock(OutputInterface::class);
         $outputMock->expects($this->any())->method('writeln')->will(

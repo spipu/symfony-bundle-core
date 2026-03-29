@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Spipu\CoreBundle\Tests\Unit\Service;
 
 use PHPUnit\Framework\TestCase;
@@ -22,7 +25,7 @@ class MailManagerTest extends TestCase
         }
     }
 
-    public function testSendHtml()
+    public function testSendHtml(): void
     {
         $twig = $this->createMock(TwigEnvironment::class);
         $twig
@@ -53,7 +56,7 @@ class MailManagerTest extends TestCase
         );
     }
 
-    public function testSendTwig()
+    public function testSendTwig(): void
     {
         $twig = $this->createMock(TwigEnvironment::class);
         $twig
@@ -86,7 +89,7 @@ class MailManagerTest extends TestCase
         );
     }
 
-    public function testPrepareAddressesOk()
+    public function testPrepareAddressesOk(): void
     {
         $address1 = new Address('test1@test.fr');
         $address2 = new Address('test2@test.fr');
@@ -125,7 +128,7 @@ class MailManagerTest extends TestCase
         $this->assertSame($address2->getAddress(), $result[1]->getAddress());
     }
 
-    public function testPrepareAddressesErrorBadTypeObject()
+    public function testPrepareAddressesErrorBadTypeObject(): void
     {
         $address = new \StdClass();
 
@@ -138,7 +141,7 @@ class MailManagerTest extends TestCase
         $service->prepareEmailAddresses($address);
     }
 
-    public function testPrepareAddressesErrorBadTypeInt()
+    public function testPrepareAddressesErrorBadTypeInt(): void
     {
         $address = 10;
 
@@ -151,7 +154,7 @@ class MailManagerTest extends TestCase
         $service->prepareEmailAddresses($address);
     }
 
-    public function testPrepareAddressesErrorBadTypeArray()
+    public function testPrepareAddressesErrorBadTypeArray(): void
     {
         $addresses = ['test@test.fr', new \StdClass()];
 

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Spipu\CoreBundle\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
@@ -10,7 +13,7 @@ use Symfony\Component\DependencyInjection\Extension\ConfigurableExtensionInterfa
 
 class SpipuCoreBundleTest extends TestCase
 {
-    public function testBase()
+    public function testBase(): void
     {
         $builder = SymfonyMock::getContainerBuilder($this);
         $configurator = SymfonyMock::getContainerConfigurator($this);
@@ -28,7 +31,7 @@ class SpipuCoreBundleTest extends TestCase
         );
     }
 
-    public function testRoleHierarchy()
+    public function testRoleHierarchy(): void
     {
         $bundle = new SpipuCoreBundle();
         $configurator = SymfonyMock::getContainerConfigurator($this);

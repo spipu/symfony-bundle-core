@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Spipu\CoreBundle\Tests\Unit\Service;
 
 use PHPUnit\Framework\TestCase;
@@ -8,13 +11,13 @@ use Spipu\CoreBundle\Service\EncryptorInterface;
 
 class EncryptorTest extends TestCase
 {
-    public function testService()
+    public function testService(): void
     {
         $service = new Encryptor('');
         $this->assertInstanceOf(EncryptorInterface::class, $service);
     }
 
-    public function testServiceOk()
+    public function testServiceOk(): void
     {
         $keyPair = (new Encryptor(''))->generateKeyPair();
         $service = new Encryptor($keyPair);
@@ -28,7 +31,7 @@ class EncryptorTest extends TestCase
         $this->assertSame($originalString, $decryptedString);
     }
 
-    public function testServiceKoEncryptEmptyKeyPair()
+    public function testServiceKoEncryptEmptyKeyPair(): void
     {
         $keyPair = '';
         $service = new Encryptor($keyPair);
@@ -37,7 +40,7 @@ class EncryptorTest extends TestCase
         $service->encrypt('my string');
     }
 
-    public function testServiceKoEncryptWrongKeyPairBadBase64()
+    public function testServiceKoEncryptWrongKeyPairBadBase64(): void
     {
         $keyPair = 'wrong_key_pair';
         $service = new Encryptor($keyPair);
@@ -46,7 +49,7 @@ class EncryptorTest extends TestCase
         $service->encrypt('my string');
     }
 
-    public function testServiceKoEncryptWrongKeyPairBadFormat()
+    public function testServiceKoEncryptWrongKeyPairBadFormat(): void
     {
         $keyPair = sodium_bin2base64('wrong_key_pair', SODIUM_BASE64_VARIANT_ORIGINAL);
         $service = new Encryptor($keyPair);
@@ -55,7 +58,7 @@ class EncryptorTest extends TestCase
         $service->encrypt('my string');
     }
 
-    public function testServiceKoDecryptWrongKeyPairBadFormat()
+    public function testServiceKoDecryptWrongKeyPairBadFormat(): void
     {
         $keyPair = sodium_bin2base64('wrong_key_pair', SODIUM_BASE64_VARIANT_ORIGINAL);
         $service = new Encryptor($keyPair);

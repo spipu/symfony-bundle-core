@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Spipu\CoreBundle\Tests\Unit\Service;
 
 use PHPUnit\Framework\TestCase;
@@ -7,7 +10,7 @@ use Symfony\Component\Process\Process;
 
 class ProcessFactoryTest extends TestCase
 {
-    public function testService()
+    public function testService(): void
     {
         $processFactory = new ProcessFactory();
         $process = $processFactory->create('bin/console mock:test --id 1', '/project/dir/');

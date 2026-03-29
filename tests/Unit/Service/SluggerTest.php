@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Spipu\CoreBundle\Tests\Unit\Service;
 
 use PHPUnit\Framework\TestCase;
@@ -7,7 +10,7 @@ use Spipu\CoreBundle\Service\SluggerInterface;
 
 class SluggerTest extends TestCase
 {
-    public function testServiceOk()
+    public function testServiceOk(): void
     {
         $service = new Slugger();
         $this->assertInstanceOf(SluggerInterface::class, $service);

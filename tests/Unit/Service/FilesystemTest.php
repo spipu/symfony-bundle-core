@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Spipu\CoreBundle\Tests\Unit\Service;
 
 use PHPUnit\Framework\TestCase;
@@ -6,10 +9,9 @@ use Spipu\CoreBundle\Service\Filesystem;
 
 class FilesystemTest extends TestCase
 {
-    public function testFiles()
+    public function testFiles(): void
     {
         $service = new Filesystem();
-
 
         $this->assertTrue($service->isFile(__FILE__));
         $this->assertFalse($service->isDir(__FILE__));
@@ -23,7 +25,7 @@ class FilesystemTest extends TestCase
         $this->assertSame(file_get_contents(__FILE__), $service->getContent(__FILE__));
     }
 
-    public function testZip()
+    public function testZip(): void
     {
         $service = new Filesystem();
 

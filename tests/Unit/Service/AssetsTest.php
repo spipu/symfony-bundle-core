@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Spipu\CoreBundle\Tests\Unit\Service;
 
 use PHPUnit\Framework\MockObject\MockObject;
@@ -11,7 +14,7 @@ use Spipu\CoreBundle\Tests\SymfonyMock;
 
 class AssetsTest extends TestCase
 {
-    public function testErrorNoTargetDir()
+    public function testErrorNoTargetDir(): void
     {
         $filesystem = SpipuCoreMock::getFilesystem($this);
         $finderFactory = SpipuCoreMock::getFinderFactory($this);
@@ -23,7 +26,7 @@ class AssetsTest extends TestCase
         $service->installAssets();
     }
 
-    public function testPublicFolderDoesNotExists()
+    public function testPublicFolderDoesNotExists(): void
     {
         $filesystem = SpipuCoreMock::getFilesystem($this);
         $finderFactory = SpipuCoreMock::getFinderFactory($this);
@@ -45,7 +48,7 @@ class AssetsTest extends TestCase
         $service->setTargetDir('my_public');
     }
 
-    public function testPublicFolderExistsDirectly()
+    public function testPublicFolderExistsDirectly(): void
     {
         $filesystem = SpipuCoreMock::getFilesystem($this);
         $finderFactory = SpipuCoreMock::getFinderFactory($this);
@@ -64,7 +67,7 @@ class AssetsTest extends TestCase
         $this->assertSame('my_public/bundles/', $service->setTargetDir('my_public'));
     }
 
-    public function testPublicFolderExistsInProject()
+    public function testPublicFolderExistsInProject(): void
     {
         $filesystem = SpipuCoreMock::getFilesystem($this);
         $finderFactory = SpipuCoreMock::getFinderFactory($this);
@@ -83,7 +86,7 @@ class AssetsTest extends TestCase
         $this->assertSame('/mock/project/my_public/bundles/', $service->setTargetDir('my_public'));
     }
 
-    public function testAutomaticPublicFolderWithoutComposer()
+    public function testAutomaticPublicFolderWithoutComposer(): void
     {
         $filesystem = SpipuCoreMock::getFilesystem($this);
         $finderFactory = SpipuCoreMock::getFinderFactory($this);
@@ -103,7 +106,7 @@ class AssetsTest extends TestCase
         $this->assertSame('public/bundles/', $service->setTargetDir(''));
     }
 
-    public function testAutomaticPublicFolderWithComposerEmpty()
+    public function testAutomaticPublicFolderWithComposerEmpty(): void
     {
         $filesystem = SpipuCoreMock::getFilesystem($this);
         $finderFactory = SpipuCoreMock::getFinderFactory($this);
@@ -128,7 +131,7 @@ class AssetsTest extends TestCase
         $this->assertSame('public/bundles/', $service->setTargetDir(''));
     }
 
-    public function testAutomaticPublicFolderWithComposerGood()
+    public function testAutomaticPublicFolderWithComposerGood(): void
     {
         $filesystem = SpipuCoreMock::getFilesystem($this);
         $finderFactory = SpipuCoreMock::getFinderFactory($this);
@@ -153,7 +156,7 @@ class AssetsTest extends TestCase
         $this->assertSame('my-public/bundles/', $service->setTargetDir(''));
     }
 
-    public function testNoAsset()
+    public function testNoAsset(): void
     {
         $filesystem = SpipuCoreMock::getFilesystem($this);
         $finderFactory = SpipuCoreMock::getFinderFactory($this);
@@ -175,7 +178,7 @@ class AssetsTest extends TestCase
         $this->assertSame([], SymfonyMock::getConsoleOutputResult());
     }
 
-    public function testAssetBadType()
+    public function testAssetBadType(): void
     {
         $asset = $this->createAsset('aaa', 'bad-type', 'my-source', []);
 
@@ -197,7 +200,7 @@ class AssetsTest extends TestCase
         $service->installAssets();
     }
 
-    public function testAssetVendorFile()
+    public function testAssetVendorFile(): void
     {
         $asset = $this->createAsset(
             'aaa',
@@ -243,7 +246,7 @@ class AssetsTest extends TestCase
         $this->assertSame(['=> aaa'], SymfonyMock::getConsoleOutputResult());
     }
 
-    public function testAssetVendorDir()
+    public function testAssetVendorDir(): void
     {
         $asset = $this->createAsset(
             'aaa',
@@ -286,7 +289,7 @@ class AssetsTest extends TestCase
         $this->assertTrue($service->installAssets());
     }
 
-    public function testAssetVendorBad()
+    public function testAssetVendorBad(): void
     {
         $asset = $this->createAsset(
             'aaa',
@@ -322,7 +325,7 @@ class AssetsTest extends TestCase
         $service->installAssets();
     }
 
-    public function testAssetUrlBad()
+    public function testAssetUrlBad(): void
     {
         $asset = $this->createAsset(
             'aaa',
@@ -349,7 +352,7 @@ class AssetsTest extends TestCase
         $service->installAssets();
     }
 
-    public function testAssetUrlGood()
+    public function testAssetUrlGood(): void
     {
         $asset = $this->createAsset(
             'aaa',
@@ -383,7 +386,7 @@ class AssetsTest extends TestCase
         $this->assertTrue($service->installAssets());
     }
 
-    public function testAssetZipBadUrl()
+    public function testAssetZipBadUrl(): void
     {
         $asset = $this->createAsset(
             'aaa',
@@ -410,7 +413,7 @@ class AssetsTest extends TestCase
         $service->installAssets();
     }
 
-    public function testAssetZipBadExt()
+    public function testAssetZipBadExt(): void
     {
         $asset = $this->createAsset(
             'aaa',
@@ -437,7 +440,7 @@ class AssetsTest extends TestCase
         $service->installAssets();
     }
 
-    public function testAssetZipBadFile()
+    public function testAssetZipBadFile(): void
     {
         $asset = $this->createAsset(
             'aaa',
@@ -478,7 +481,7 @@ class AssetsTest extends TestCase
         $service->installAssets();
     }
 
-    public function testAssetZipGood()
+    public function testAssetZipGood(): void
     {
         $asset = $this->createAsset(
             'aaa',

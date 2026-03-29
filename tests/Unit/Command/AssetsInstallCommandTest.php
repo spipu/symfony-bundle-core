@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Spipu\CoreBundle\Tests\Unit\Command;
 
 use PHPUnit\Framework\TestCase;
@@ -8,7 +11,7 @@ use Spipu\CoreBundle\Tests\SymfonyMock;
 
 class AssetsInstallCommandTest extends TestCase
 {
-    public function testLoad()
+    public function testLoad(): void
     {
         $assets = $this->createMock(Assets::class);
         $assets

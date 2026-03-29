@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Spipu\CoreBundle\Tests\Unit\Command;
 
 use PHPUnit\Framework\TestCase;
@@ -7,7 +10,7 @@ use Spipu\CoreBundle\Tests\SymfonyMock;
 
 class EncryptorKeyPairCommandTest extends TestCase
 {
-    public function testLoad()
+    public function testLoad(): void
     {
         $inputMock = SymfonyMock::getConsoleInput($this);
         $outputMock = SymfonyMock::getConsoleOutput($this);

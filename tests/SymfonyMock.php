@@ -9,6 +9,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Spipu\CoreBundle\Tests;
 
 use Doctrine\DBAL\Connection;
@@ -65,12 +67,12 @@ class SymfonyMock extends TestCase
     /**
      * @var string[]
      */
-    protected static $consoleOutputMessages = [];
+    protected static array $consoleOutputMessages = [];
 
     /**
      * @var array
      */
-    protected static $containerBuilderParameters = [];
+    protected static array $containerBuilderParameters = [];
 
     /**
      * @param TestCase $testCase
@@ -78,7 +80,7 @@ class SymfonyMock extends TestCase
      * @param array $parameters
      * @return MockObject|ContainerInterface
      */
-    public static function getContainer(TestCase $testCase, array $services = [], array $parameters = [])
+    public static function getContainer(TestCase $testCase, array $services = [], array $parameters = []): ContainerInterface
     {
         $container = $testCase->createMock(ContainerInterface::class);
 
@@ -115,7 +117,7 @@ class SymfonyMock extends TestCase
      * @param array $extensions
      * @return MockObject|ContainerBuilder
      */
-    public static function getContainerBuilder(TestCase $testCase, array $extensions = [])
+    public static function getContainerBuilder(TestCase $testCase, array $extensions = []): ContainerBuilder
     {
         self::$containerBuilderParameters = [];
 
@@ -189,7 +191,7 @@ class SymfonyMock extends TestCase
      * @param TestCase $testCase
      * @return ContainerConfigurator
      */
-    public static function getContainerConfigurator(TestCase $testCase)
+    public static function getContainerConfigurator(TestCase $testCase): ContainerConfigurator
     {
         $phpFileLoader = $testCase->createMock(PhpFileLoader::class);
         $instanceOf = [];
@@ -208,7 +210,7 @@ class SymfonyMock extends TestCase
      * @param TestCase $testCase
      * @return MockObject|ParameterBagInterface
      */
-    public static function getParameterBag(TestCase $testCase)
+    public static function getParameterBag(TestCase $testCase): ParameterBagInterface
     {
         $parameterBag = $testCase->createMock(ParameterBagInterface::class);
 
@@ -224,7 +226,7 @@ class SymfonyMock extends TestCase
      * @param array $getValues
      * @return MockObject|RequestStack
      */
-    public static function getRequestStack(TestCase $testCase, array $getValues = [])
+    public static function getRequestStack(TestCase $testCase, array $getValues = []): RequestStack
     {
         $session = self::getSession($testCase);
 
@@ -254,7 +256,7 @@ class SymfonyMock extends TestCase
      * @param TestCase $testCase
      * @return MockObject|RouterInterface
      */
-    public static function getRouter(TestCase $testCase)
+    public static function getRouter(TestCase $testCase): RouterInterface
     {
         $router = $testCase->createMock(RouterInterface::class);
         $router
@@ -278,7 +280,7 @@ class SymfonyMock extends TestCase
      * @param TestCase $testCase
      * @return MockObject|TranslatorInterface
      */
-    public static function getTranslator(TestCase $testCase)
+    public static function getTranslator(TestCase $testCase): TranslatorInterface
     {
         $translator = $testCase->createMock(TranslatorInterface::class);
         $translator
@@ -294,7 +296,7 @@ class SymfonyMock extends TestCase
      * @param TestCase $testCase
      * @return MockObject|EventDispatcherInterface
      */
-    public static function getEventDispatcher(TestCase $testCase)
+    public static function getEventDispatcher(TestCase $testCase): EventDispatcherInterface
     {
         return $testCase->createMock(EventDispatcherInterface::class);
     }
@@ -304,7 +306,7 @@ class SymfonyMock extends TestCase
      * @param array $grantedRoles
      * @return MockObject|AuthorizationCheckerInterface
      */
-    public static function getAuthorizationChecker(TestCase $testCase, array $grantedRoles = [])
+    public static function getAuthorizationChecker(TestCase $testCase, array $grantedRoles = []): AuthorizationCheckerInterface
     {
         if ($grantedRoles === []) {
             $grantedRoles = [
@@ -330,7 +332,7 @@ class SymfonyMock extends TestCase
      * @param TestCase $testCase
      * @return MockObject|ClassMetadata
      */
-    public static function getEntityMetaData(TestCase $testCase)
+    public static function getEntityMetaData(TestCase $testCase): ClassMetadata
     {
         return $testCase->createMock(ClassMetadata::class);
     }
@@ -339,7 +341,7 @@ class SymfonyMock extends TestCase
      * @param TestCase $testCase
      * @return MockObject|EntityManagerInterface
      */
-    public static function getEntityManager(TestCase $testCase)
+    public static function getEntityManager(TestCase $testCase): EntityManagerInterface
     {
         $entityManager = $testCase->createMock(EntityManagerInterface::class);
 
@@ -369,7 +371,7 @@ class SymfonyMock extends TestCase
      * @param TestCase $testCase
      * @return Connection|MockObject
      */
-    public static function getConnection(TestCase $testCase)
+    public static function getConnection(TestCase $testCase): Connection
     {
         $connection = $testCase->createMock(Connection::class);
 
@@ -389,7 +391,7 @@ class SymfonyMock extends TestCase
      * @param TestCase $testCase
      * @return MockObject|ManagerRegistry
      */
-    public static function getEntityRegistry(TestCase $testCase)
+    public static function getEntityRegistry(TestCase $testCase): ManagerRegistry
     {
         $registry = $testCase->createMock(ManagerRegistry::class);
 
@@ -405,7 +407,7 @@ class SymfonyMock extends TestCase
      * @param TestCase $testCase
      * @return MockObject|Twig_Environment
      */
-    public static function getTwig(TestCase $testCase)
+    public static function getTwig(TestCase $testCase): Twig_Environment
     {
         return $testCase->createMock(Twig_Environment::class);
     }
@@ -414,7 +416,7 @@ class SymfonyMock extends TestCase
      * @param TestCase $testCase
      * @return CacheItemPoolInterface
      */
-    public static function getCachePool(TestCase $testCase)
+    public static function getCachePool(TestCase $testCase): CacheItemPoolInterface
     {
         return new ArrayAdapter(0, false);
     }
@@ -482,7 +484,7 @@ class SymfonyMock extends TestCase
         string $fileName = '/tmp/image.jpg',
         string $guessExtension = 'jpeg',
         string $mimeType = 'image/jpeg'
-    ) {
+    ): File {
         $file = $testCase->createMock(File::class);
 
         self::prepareFile($testCase, $file, $fileName, $guessExtension, $mimeType);
@@ -505,7 +507,7 @@ class SymfonyMock extends TestCase
         string $originalFileName = 'image.jpg',
         string $guessExtension = 'jpeg',
         string $mimeType = 'image/jpeg'
-    ) {
+    ): UploadedFile {
         $file = $testCase->createMock(UploadedFile::class);
 
         self::prepareFile($testCase, $file, $path, $guessExtension, $mimeType);
@@ -526,7 +528,7 @@ class SymfonyMock extends TestCase
      * @param array $options
      * @return MockObject|InputInterface
      */
-    public static function getConsoleInput(TestCase $testCase, array $arguments = [], array $options = [])
+    public static function getConsoleInput(TestCase $testCase, array $arguments = [], array $options = []): InputInterface
     {
         $input = $testCase->createMock(InputInterface::class);
 
@@ -550,7 +552,7 @@ class SymfonyMock extends TestCase
      * @param TestCase $testCase
      * @return MockObject|OutputInterface
      */
-    public static function getConsoleOutput(TestCase $testCase)
+    public static function getConsoleOutput(TestCase $testCase): OutputInterface
     {
         self::$consoleOutputMessages = [];
 
@@ -595,7 +597,7 @@ class SymfonyMock extends TestCase
      * @param TestCase $testCase
      * @return MockObject|SymfonyStyle
      */
-    public static function getConsoleSymfonyStyle(TestCase $testCase)
+    public static function getConsoleSymfonyStyle(TestCase $testCase): SymfonyStyle
     {
         self::$consoleOutputMessages = [];
 
@@ -674,7 +676,7 @@ class SymfonyMock extends TestCase
      * @param TestCase $testCase
      * @return MockObject|TokenStorageInterface
      */
-    public static function getTokenStorage(TestCase $testCase)
+    public static function getTokenStorage(TestCase $testCase): TokenStorageInterface
     {
         $token = $testCase->createMock(TokenInterface::class);
 
@@ -692,7 +694,7 @@ class SymfonyMock extends TestCase
      * @param TestCase $testCase
      * @return MockObject|PasswordHasherInterface
      */
-    public static function getPasswordHasher(TestCase $testCase)
+    public static function getPasswordHasher(TestCase $testCase): PasswordHasherInterface
     {
         $hasher = $testCase->createMock(PasswordHasherInterface::class);
 
@@ -720,7 +722,7 @@ class SymfonyMock extends TestCase
      * @param TestCase $testCase
      * @return MockObject|PasswordHasherFactoryInterface
      */
-    public static function getPasswordHasherFactory(TestCase $testCase)
+    public static function getPasswordHasherFactory(TestCase $testCase): PasswordHasherFactoryInterface
     {
         $hasherFactory = $testCase->createMock(PasswordHasherFactoryInterface::class);
         $hasherFactory
@@ -736,7 +738,7 @@ class SymfonyMock extends TestCase
      * @param UserInterface $user
      * @return MockObject|UserProviderInterface
      */
-    public static function getUserProvider(TestCase $testCase, UserInterface $user)
+    public static function getUserProvider(TestCase $testCase, UserInterface $user): UserProviderInterface
     {
         $userProvider = $testCase->createMock(UserProviderInterface::class);
         $userProvider
@@ -780,7 +782,7 @@ class SymfonyMock extends TestCase
      * @param TestCase $testCase
      * @return MockObject|QueryBuilder
      */
-    public static function getDoctrineQueryBuilder(TestCase $testCase)
+    public static function getDoctrineQueryBuilder(TestCase $testCase): QueryBuilder
     {
         $builder = $testCase->createMock(QueryBuilder::class);
 
@@ -830,7 +832,7 @@ class SymfonyMock extends TestCase
      * @param TestCase $testCase
      * @return MockObject|Query
      */
-    public static function getDoctrineQuery(TestCase $testCase)
+    public static function getDoctrineQuery(TestCase $testCase): Query
     {
         return $testCase->createMock(Query::class);
     }
@@ -839,7 +841,7 @@ class SymfonyMock extends TestCase
      * @param TestCase $testCase
      * @return MockObject|Security
      */
-    public static function getSecurity(TestCase $testCase)
+    public static function getSecurity(TestCase $testCase): Security
     {
         $user = new InMemoryUser('42', 'pass');
 

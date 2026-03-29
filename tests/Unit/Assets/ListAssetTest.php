@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Spipu\CoreBundle\Tests\Unit\Assets;
 
 use PHPUnit\Framework\TestCase;
@@ -7,7 +10,7 @@ use Spipu\CoreBundle\Assets\ListAsset;
 
 class ListAssetTest extends TestCase
 {
-    public function testList()
+    public function testList(): void
     {
         $assetA = $this->createMock(AssetInterface::class);
         $assetA->expects($this->once())->method('getCode')->willReturn('aaa');
@@ -32,7 +35,7 @@ class ListAssetTest extends TestCase
         );
     }
 
-    public function testBadCode()
+    public function testBadCode(): void
     {
         $asset = $this->createMock(AssetInterface::class);
         $asset->expects($this->once())->method('getCode')->willReturn('Aaa/../');

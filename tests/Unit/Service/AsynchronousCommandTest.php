@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Spipu\CoreBundle\Tests\Unit\Service;
 
 use PHPUnit\Framework\TestCase;
@@ -11,7 +14,7 @@ use Symfony\Component\Process\Process;
 
 class AsynchronousCommandTest extends TestCase
 {
-    public function testCreateDefaultValues()
+    public function testCreateDefaultValues(): void
     {
         $process = $this->createMock(Process::class);
         $process->expects($this->never())->method('start');
@@ -42,7 +45,7 @@ class AsynchronousCommandTest extends TestCase
         $this->assertInstanceOf(Process::class, $process);
     }
 
-    public function testCreateSpecificValues()
+    public function testCreateSpecificValues(): void
     {
         $process = $this->createMock(Process::class);
         $process->expects($this->never())->method('start');
@@ -75,7 +78,7 @@ class AsynchronousCommandTest extends TestCase
         $this->assertInstanceOf(Process::class, $process);
     }
 
-    public function testCreateNoLogs()
+    public function testCreateNoLogs(): void
     {
         $process = $this->createMock(Process::class);
         $process->expects($this->never())->method('start');
@@ -106,7 +109,7 @@ class AsynchronousCommandTest extends TestCase
         $this->assertInstanceOf(Process::class, $process);
     }
 
-    public function testExecute()
+    public function testExecute(): void
     {
         $process = $this->createMock(Process::class);
         $process->expects($this->once())->method('start');
@@ -134,7 +137,7 @@ class AsynchronousCommandTest extends TestCase
         $this->assertTrue($service->execute('test:mock', []));
     }
 
-    public function testExecuteKoNoProcess()
+    public function testExecuteKoNoProcess(): void
     {
         $process = $this->createMock(Process::class);
         $process
@@ -142,7 +145,6 @@ class AsynchronousCommandTest extends TestCase
             ->method('start')
             ->willThrowException(new RuntimeException('Unable to launch a new process.'))
         ;
-
 
         $processFactory = $this->createMock(ProcessFactory::class);
         $processFactory
@@ -168,7 +170,7 @@ class AsynchronousCommandTest extends TestCase
         $service->execute('test:mock', []);
     }
 
-    public function testExecuteKoOther()
+    public function testExecuteKoOther(): void
     {
         $process = $this->createMock(Process::class);
         $process
@@ -176,7 +178,6 @@ class AsynchronousCommandTest extends TestCase
             ->method('start')
             ->willThrowException(new RuntimeException('Other pb.'))
         ;
-
 
         $processFactory = $this->createMock(ProcessFactory::class);
         $processFactory

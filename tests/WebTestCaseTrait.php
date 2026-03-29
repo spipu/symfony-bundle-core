@@ -9,6 +9,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Spipu\CoreBundle\Tests;
 
 use Exception;
@@ -20,7 +22,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 trait WebTestCaseTrait
 {
-    protected static $dataPrimerInitialized = false;
+    protected static bool $dataPrimerInitialized = false;
 
     /**
      * @param KernelInterface $kernel
@@ -41,7 +43,7 @@ trait WebTestCaseTrait
      * @param ContainerInterface $container
      * @return void
      */
-    protected function loadFixtures(ContainerInterface $container)
+    protected function loadFixtures(ContainerInterface $container): void
     {
         /** @var ListFixture $listFixture */
         $listFixture = $container->get('Spipu\CoreBundle\Fixture\ListFixture');
@@ -56,7 +58,7 @@ trait WebTestCaseTrait
      * @param ListFixture $listFixture
      * @return void
      */
-    protected function setupFixtures(ListFixture $listFixture)
+    protected function setupFixtures(ListFixture $listFixture): void
     {
         try {
             $listFixture->get('sample-user')->setMaxSteps(2);
@@ -148,8 +150,8 @@ trait WebTestCaseTrait
         string $from,
         string $to,
         string $subject,
-        string $bodyContains = null
-    ): String {
+        ?string $bodyContains = null
+    ): string {
         $this->assertEmailCount(1);
 
         $email = $this->getMailerMessage(0);

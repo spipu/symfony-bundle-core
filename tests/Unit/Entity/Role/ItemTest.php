@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Spipu\CoreBundle\Tests\Unit\Entity\Role;
 
 use PHPUnit\Framework\TestCase;
@@ -6,7 +9,7 @@ use Spipu\CoreBundle\Entity\Role\Item;
 
 class ItemTest extends TestCase
 {
-    public function testEntity()
+    public function testEntity(): void
     {
         Item::resetAll();
         $this->assertSame([], Item::getAll());

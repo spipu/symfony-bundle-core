@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Spipu\CoreBundle\Tests\Unit\Service;
 
 use PHPUnit\Framework\TestCase;
@@ -9,7 +12,7 @@ use Spipu\CoreBundle\Service\RoleDefinitionList;
 
 class RoleDefinitionListTest extends TestCase
 {
-    public function testServiceEmpty()
+    public function testServiceEmpty(): void
     {
         Item::resetAll();
         $list = [];
@@ -24,7 +27,7 @@ class RoleDefinitionListTest extends TestCase
         $this->assertIsArrayWithCount($result, 0);
     }
 
-    public function testServiceNotEmpty()
+    public function testServiceNotEmpty(): void
     {
         $list = [
             new RoleDefinition(),

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Spipu\CoreBundle\Tests\Unit\Service;
 
 use PHPUnit\Framework\TestCase;
@@ -6,7 +9,7 @@ use Spipu\CoreBundle\Service\Environment;
 
 class EnvironmentTest extends TestCase
 {
-    public function testServiceOk()
+    public function testServiceOk(): void
     {
         $service = new Environment('dev');
         $this->assertSame('dev', $service->getCurrentCode());
