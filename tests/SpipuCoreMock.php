@@ -26,7 +26,7 @@ class SpipuCoreMock extends TestCase
      * @param TestCase $testCase
      * @return MockObject|Filesystem
      */
-    public static function getFilesystem(TestCase $testCase)
+    public static function getFilesystem(TestCase $testCase): Filesystem
     {
         $filesystem = $testCase->createMock(Filesystem::class);
 
@@ -38,7 +38,7 @@ class SpipuCoreMock extends TestCase
      * @param TestCase $testCase
      * @return MockObject|FinderFactory
      */
-    public static function getFinderFactory(TestCase $testCase)
+    public static function getFinderFactory(TestCase $testCase): FinderFactory
     {
         $finder = $testCase->createMock(Finder::class);
         $finder->method('directories')->willReturn($finder);
@@ -64,7 +64,7 @@ class SpipuCoreMock extends TestCase
      * @param TestCase $testCase
      * @return MockObject|MailManager
      */
-    public static function getMailManager(TestCase $testCase)
+    public static function getMailManager(TestCase $testCase): MailManager
     {
         $mailManager = $testCase->createMock(MailManager::class);
 
