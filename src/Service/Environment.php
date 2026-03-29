@@ -27,11 +27,6 @@ class Environment implements EnvironmentInterface
         $this->setColor(self::ENV_PROD, 'primary');
     }
 
-    protected function setColor(string $code, string $color): void
-    {
-        $this->environments[$code]['color'] = $color;
-    }
-
     public function getCurrentCode(): string
     {
         return $this->currentCode;
@@ -40,6 +35,11 @@ class Environment implements EnvironmentInterface
     public function getCurrentName(): string
     {
         return $this->environments[$this->currentCode]['name'];
+    }
+
+    public function setColor(string $code, string $color): void
+    {
+        $this->environments[$code]['color'] = $color;
     }
 
     public function getCurrentColor(): string

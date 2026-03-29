@@ -312,6 +312,7 @@ Describes the application environment with a human-readable name and Bootstrap c
 | `getCurrentCode(): string` | Returns `'dev'`, `'preprod'`, or `'prod'` |
 | `getCurrentName(): string` | Returns `'Development'`, `'PreProduction'`, or `'Production'` |
 | `getCurrentColor(): string` | Returns a Bootstrap color string (`'secondary'`, `'danger'`, `'primary'`) |
+| `setColor(string $code, string $color): void` | Register a custom Bootstrap color for an environment code |
 | `isProduction(): bool` | `true` when code is `'prod'` |
 | `isPreproduction(): bool` | `true` when code is `'preprod'` |
 | `isDevelopment(): bool` | `true` when code is `'dev'` |

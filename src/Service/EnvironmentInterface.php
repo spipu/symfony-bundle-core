@@ -17,4 +17,8 @@ interface EnvironmentInterface
     public function isDevelopment(): bool;
 
     public function getEnvironmentSuffix(): string;
+
+    public function setColor(string $code, string $color): void;
+
+    public function getCurrentColor(): string;
 }
