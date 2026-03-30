@@ -57,7 +57,7 @@ class RoleDefinitionListTest extends TestCase
         $this->assertIsArrayWithCount($service->getItems('other', Item::TYPE_ROLE), 0);
     }
 
-    private function assertIsArrayWithCount($result, int $count): void
+    private function assertIsArrayWithCount(mixed $result, int $count): void
     {
         $this->assertIsArray($result);
         $this->assertSame($count, count($result));

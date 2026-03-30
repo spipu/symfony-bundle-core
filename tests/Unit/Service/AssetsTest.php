@@ -530,7 +530,7 @@ class AssetsTest extends TestCase
      * @param array $mapping
      * @return MockObject|AssetInterface
      */
-    private function createAsset(string $code, string $type, string $source, array $mapping)
+    private function createAsset(string $code, string $type, string $source, array $mapping): AssetInterface
     {
         $asset = $this->createMock(AssetInterface::class);
 
@@ -547,7 +547,7 @@ class AssetsTest extends TestCase
      * @param array $assets
      * @return MockObject|ListAsset
      */
-    private function createList(array $assets)
+    private function createList(array $assets): ListAsset
     {
         $list = $this->createMock(ListAsset::class);
 

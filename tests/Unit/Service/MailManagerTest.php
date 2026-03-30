@@ -15,7 +15,7 @@ use Twig\Environment as TwigEnvironment;
 
 class MailManagerTest extends TestCase
 {
-    private function validateAddresses($expected, $addresses)
+    private function validateAddresses(array $expected, array $addresses): void
     {
         $this->assertSame(count($expected), count($addresses));
 
