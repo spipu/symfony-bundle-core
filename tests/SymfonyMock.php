@@ -130,7 +130,7 @@ class SymfonyMock extends TestCase
         $containerBuilder
             ->method('setParameter')
             ->willReturnCallback(
-                function ($name, $value) {
+                function (string $name, mixed $value) {
                     SymfonyMock::$containerBuilderParameters[$name] = $value;
                 }
             );
@@ -138,7 +138,7 @@ class SymfonyMock extends TestCase
         $containerBuilder
             ->method('hasParameter')
             ->willReturnCallback(
-                function ($name) {
+                function (string $name) {
                     return array_key_exists($name, SymfonyMock::$containerBuilderParameters);
                 }
             );
@@ -146,7 +146,7 @@ class SymfonyMock extends TestCase
         $containerBuilder
             ->method('getParameter')
             ->willReturnCallback(
-                function ($name) {
+                function (string $name) {
                     return SymfonyMock::$containerBuilderParameters[$name];
                 }
             );
@@ -154,7 +154,7 @@ class SymfonyMock extends TestCase
         $containerBuilder
             ->method('prependExtensionConfig')
             ->willReturnCallback(
-                function ($name, array $config) {
+                function (string $name, array $config) {
                     $name = 'prependConfig::' . $name;
                     SymfonyMock::$containerBuilderParameters[$name][] = $config;
                 }
@@ -163,7 +163,7 @@ class SymfonyMock extends TestCase
         $containerBuilder
             ->method('getExtensionConfig')
             ->willReturnCallback(
-                function ($name) {
+                function (string $name) {
                     $name = 'prependConfig::' . $name;
                     return SymfonyMock::$containerBuilderParameters[$name];
                 }
@@ -176,7 +176,7 @@ class SymfonyMock extends TestCase
         );
 
         $containerBuilder->method('setAlias')->willReturnCallback(
-            function ($alias, string $id) {
+            function (string $alias, string $id) {
                 return new Alias($id);
             }
         );
@@ -263,7 +263,7 @@ class SymfonyMock extends TestCase
             ->expects($testCase->any())
             ->method('generate')
             ->willReturnCallback(
-                function ($name, $parameters = []) {
+                function (string $name, array $parameters = []) {
                     $url = '/' . $name . '/';
                     if ($parameters && $query = http_build_query($parameters, '', '&', PHP_QUERY_RFC3986)) {
                         $url .= '?' . strtr($query, ['%2F' => '/']);
@@ -378,7 +378,7 @@ class SymfonyMock extends TestCase
         $connection
             ->method('quote')
             ->willReturnCallback(
-                function ($value) {
+                function (string $value) {
                     return "'" . addslashes($value) . "'";
                 }
             );
@@ -569,7 +569,7 @@ class SymfonyMock extends TestCase
         $output
             ->method('write')
             ->willReturnCallback(
-                function ($messages, $newline = false, $options = 0) {
+                function (mixed $messages, bool $newline = false, int $options = 0) {
                     if (!is_array($messages)) {
                         $messages = [(string) $messages];
                     }
@@ -584,7 +584,7 @@ class SymfonyMock extends TestCase
         $output
             ->method('writeln')
             ->willReturnCallback(
-                function ($messages, $options = 0) use ($output) {
+                function (mixed $messages, int $options = 0) use ($output) {
                     $output->write($messages, true, $options);
                 }
             );
@@ -606,7 +606,7 @@ class SymfonyMock extends TestCase
         $symfonyStyle
             ->method('writeln')
             ->willReturnCallback(
-                function ($messages, $type = 1) {
+                function (mixed $messages, int $type = 1) {
                     if (!is_array($messages)) {
                         $messages = [(string) $messages];
                     }
@@ -621,7 +621,7 @@ class SymfonyMock extends TestCase
         $symfonyStyle
             ->method('text')
             ->willReturnCallback(
-                function ($messages) use ($symfonyStyle) {
+                function (mixed $messages) use ($symfonyStyle) {
                     $symfonyStyle->writeln($messages);
                 }
             );
@@ -701,7 +701,7 @@ class SymfonyMock extends TestCase
         $hasher
             ->method('hash')
             ->willReturnCallback(
-                function ($plainPassword) {
+                function (string $plainPassword) {
                     return 'encoded_' . $plainPassword;
                 }
             );
@@ -762,7 +762,7 @@ class SymfonyMock extends TestCase
         $hasher
             ->method('hashPassword')
             ->willReturnCallback(
-                function (PasswordAuthenticatedUserInterface $user, $plainPassword) {
+                function (PasswordAuthenticatedUserInterface $user, string $plainPassword) {
                     return 'encoded_' . $plainPassword;
                 }
             );
@@ -770,7 +770,7 @@ class SymfonyMock extends TestCase
         $hasher
             ->method('isPasswordValid')
             ->willReturnCallback(
-                function (PasswordAuthenticatedUserInterface $user, $raw) use ($hasher) {
+                function (PasswordAuthenticatedUserInterface $user, string $raw) use ($hasher) {
                     return $user->getPassword() === $hasher->hashPassword($user, $raw);
                 }
             );
