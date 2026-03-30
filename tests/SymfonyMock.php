@@ -459,7 +459,7 @@ class SymfonyMock extends TestCase
         $file->method('getMimeType')->willReturn($mimeType);
 
         $file->method('move')->willReturnCallback(
-            function ($directory, $name = null) use ($file, $testCase, $fileName, $guessExtension, $mimeType) {
+            function (string $directory, ?string $name = null) use ($file, $testCase, $fileName, $guessExtension, $mimeType): File {
                 $newName = $fileName;
                 if ($name !== null) {
                     $newName = $name;

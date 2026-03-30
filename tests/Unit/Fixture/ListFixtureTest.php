@@ -21,7 +21,7 @@ class ListFixtureTest extends TestCase
         $outputMock = $this->createMock(OutputInterface::class);
         $outputMock->expects($this->any())->method('writeln')->will(
             $this->returnCallback(
-                function ($text, $options = 0) {
+                function (mixed $text, int $options = 0): void {
                     $this->outputText .= $text . ',';
                 }
             )
@@ -84,7 +84,7 @@ class ListFixtureTest extends TestCase
         $outputMock = $this->createMock(OutputInterface::class);
         $outputMock->expects($this->any())->method('writeln')->will(
             $this->returnCallback(
-                function ($text, $options = 0) {
+                function (mixed $text, int $options = 0): void {
                     $this->outputText .= $text . ',';
                 }
             )

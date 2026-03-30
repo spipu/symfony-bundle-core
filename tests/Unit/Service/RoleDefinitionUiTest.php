@@ -15,7 +15,7 @@ class RoleDefinitionUiTest extends TestCase
         TestCase $testCase,
         RoleDefinitionInterface $roleDefinition,
         bool $cleanNativeRoles = true
-    ) {
+    ): array {
         Item::resetAll();
 
         $roleDefinition->buildDefinition();
