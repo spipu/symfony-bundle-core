@@ -16,7 +16,7 @@ class Slugger implements SluggerInterface
         $this->slugger = new AsciiSlugger('en');
     }
 
-    public function slug(string $string, string $separator = '-', string $locale = null): string
+    public function slug(string $string, string $separator = '-', ?string $locale = null): string
     {
         return $this->slugger->slug($string, $separator, $locale)->lower()->toString();
     }

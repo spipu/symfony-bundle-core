@@ -26,7 +26,7 @@ class AssetsInstallCommand extends Command
 
     public function __construct(
         Assets $assets,
-        string $name = null
+        ?string $name = null
     ) {
         parent::__construct($name);
 

@@ -38,7 +38,7 @@ class MailManagerTest extends TestCase
             ->method('send')
             ->will(
                 $this->returnCallback(
-                    function (Email $email, Envelope $envelope = null) {
+                    function (Email $email, ?Envelope $envelope = null) {
                         $this->validateAddresses(['from@test.fr'], $email->getFrom());
                         $this->validateAddresses(['to_1@test.fr', 'to_2@test.fr'], $email->getTo());
                         $this->assertSame('Subject', $email->getSubject());
@@ -71,7 +71,7 @@ class MailManagerTest extends TestCase
             ->method('send')
             ->will(
                 $this->returnCallback(
-                    function (Email $email, Envelope $envelope = null) {
+                    function (Email $email, ?Envelope $envelope = null) {
                         $this->validateAddresses(['from@test.fr'], $email->getFrom());
                         $this->validateAddresses(['to_1@test.fr', 'to_2@test.fr'], $email->getTo());
                         $this->assertSame('Subject', $email->getSubject());

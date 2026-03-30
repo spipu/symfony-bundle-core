@@ -15,5 +15,5 @@ namespace Spipu\CoreBundle\Service;
 
 interface SluggerInterface
 {
-    public function slug(string $string, string $separator = '-', string $locale = null): string;
+    public function slug(string $string, string $separator = '-', ?string $locale = null): string;
 }
