@@ -47,16 +47,16 @@ services:
 
     Spipu\CoreBundle\Service\RoleDefinitionList:
         arguments:
-            - !tagged 'spipu.user.role'
+            - !tagged_iterator 'spipu.user.role'
 
     # Internal Services
     Spipu\CoreBundle\Fixture\ListFixture:
         arguments:
-            - !tagged 'spipu.fixture'
+            - !tagged_iterator 'spipu.fixture'
 
     Spipu\CoreBundle\Assets\ListAsset:
         arguments:
-            - !tagged 'spipu.asset'
+            - !tagged_iterator 'spipu.asset'
 
     Spipu\CoreBundle\Service\Assets:
         arguments:
