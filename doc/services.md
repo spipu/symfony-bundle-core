@@ -246,6 +246,45 @@ php bin/console spipu:fixtures:remove
 
 ---
 
+## AbstractController
+
+Base controller for all Spipu bundle controllers. Extends Symfony's `AbstractController` and adds translation helpers.
+
+**Class:** `Spipu\CoreBundle\Controller\AbstractController`
+
+All controllers in Spipu bundles should extend this class instead of Symfony's `AbstractController` directly.
+
+```php
+use Spipu\CoreBundle\Controller\AbstractController;
+
+class MyController extends AbstractController
+{
+    public function myAction(): Response
+    {
+        // Translate with the default domain
+        $message = $this->trans('my.translation.key');
+
+        // Translate with a specific domain
+        $message = $this->trans('Invalid credentials.', [], 'security');
+
+        // Add a translated flash message
+        $this->addFlashTrans('success', 'my.success.message');
+
+        // Add a translated flash message with a specific domain
+        $this->addFlashTrans('danger', 'Invalid credentials.', [], 'security');
+    }
+}
+```
+
+**Methods:**
+
+| Method | Description |
+|--------|-------------|
+| `trans(string $message, array $params = [], ?string $domain = null): string` | Translate a message key |
+| `addFlashTrans(string $type, string $message, array $params = [], ?string $domain = null): void` | Add a translated flash message |
+
+---
+
 ## AbstractBundle
 
 The base class for all Spipu bundles. Extends Symfony's `AbstractBundle` and adds:
