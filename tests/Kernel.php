@@ -35,19 +35,4 @@ class Kernel extends AppKernel
     {
         return $this->getProjectDir() . '/var-test/log';
     }
-
-    /**
-     * @param ContainerConfigurator $container
-     * @param LoaderInterface $loader
-     * @param ContainerBuilder $builder
-     */
-    protected function configureContainer(
-        ContainerConfigurator $container,
-        LoaderInterface $loader,
-        ContainerBuilder $builder
-    ): void {
-        parent::configureContainer($container, $loader, $builder);
-
-        $container->parameters()->set('APP_SETTINGS_DATABASE_URL', 'sqlite:///%kernel.project_dir%/var-test/test.sqlite');
-    }
 }

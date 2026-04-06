@@ -52,7 +52,7 @@ class WebTestCase extends BaseWebTestCase
 
         /** @var Command $command */
         $command = static::getContainer()->get($class);
-        $application->add($command);
+        $application->addCommand($command);
 
         return new CommandTester($application->find($name));
     }

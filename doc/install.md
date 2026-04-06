@@ -4,8 +4,8 @@
 
 ## Requirements
 
-- PHP 8.1+ with `ext-sodium`
-- Symfony 6.4+
+- PHP >= 8.3 with `ext-sodium`
+- Symfony >= 7.4
 
 ## Installation
 
@@ -60,7 +60,7 @@ Override only the optional arguments you need to change:
 services:
     Spipu\CoreBundle\Service\AsynchronousCommand:
         arguments:
-            $phpBin: 'php8.1'           # default: 'php'
+            $phpBin: 'php8.3'           # default: 'php'
             $logFilename: 'async.log'   # default: 'asynchronous-command.log'
 ```
 
