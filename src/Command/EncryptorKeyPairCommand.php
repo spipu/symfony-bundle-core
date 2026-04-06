@@ -14,21 +14,20 @@ declare(strict_types=1);
 namespace Spipu\CoreBundle\Command;
 
 use Spipu\CoreBundle\Service\Encryptor;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(name: 'spipu:encryptor:generate-key-pair', description: 'Generate a Encryptor Key Pair')]
 class EncryptorKeyPairCommand extends Command
 {
     protected function configure(): void
     {
         parent::configure();
 
-        $this
-            ->setName('spipu:encryptor:generate-key-pair')
-            ->setDescription('Generate a Encryptor Key Pair')
-            ->setHelp("The <info>%command.name%</info> command generates a new encryptor key pair.");
+        $this->setHelp("The <info>%command.name%</info> command generates a new encryptor key pair.");
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

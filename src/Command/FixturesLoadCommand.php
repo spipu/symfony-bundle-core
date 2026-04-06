@@ -14,10 +14,12 @@ declare(strict_types=1);
 namespace Spipu\CoreBundle\Command;
 
 use Spipu\CoreBundle\Fixture\ListFixture;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'spipu:fixtures:load', description: 'Load the Spipu Fixtures.')]
 class FixturesLoadCommand extends Command
 {
     private ListFixture $listFixture;
@@ -29,15 +31,6 @@ class FixturesLoadCommand extends Command
         parent::__construct($name);
 
         $this->listFixture = $listFixture;
-    }
-
-    protected function configure(): void
-    {
-        $this
-            ->setName('spipu:fixtures:load')
-            ->setDescription('Load the Spipu Fixtures.')
-            ->setHelp('This command will load all the Spipu Fixtures')
-        ;
     }
 
     /**

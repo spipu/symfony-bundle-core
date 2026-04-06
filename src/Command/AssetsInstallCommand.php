@@ -14,12 +14,14 @@ declare(strict_types=1);
 namespace Spipu\CoreBundle\Command;
 
 use Spipu\CoreBundle\Service\Assets;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(name: 'spipu:assets:install', description: 'Installs spipu web assets under a public directory')]
 class AssetsInstallCommand extends Command
 {
     private Assets $assets;
@@ -38,11 +40,9 @@ class AssetsInstallCommand extends Command
         parent::configure();
 
         $this
-            ->setName('spipu:assets:install')
             ->setDefinition(array(
                 new InputArgument('target', InputArgument::OPTIONAL, 'The target directory', ''),
             ))
-            ->setDescription('Installs spipu web assets under a public directory')
             ->setHelp(
                 "
 The <info>%command.name%</info> command installs spipu web assets into a given
