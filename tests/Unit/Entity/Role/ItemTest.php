@@ -19,10 +19,12 @@ class ItemTest extends TestCase
         $this->assertSame([], Item::getAll());
 
         $main = Item::load('main_code');
+        $this->assertSame('admin', $main->getPurpose());
         $main
             ->setLabel('main_label')
             ->setType('main_type')
             ->setWeight(10)
+            ->setPurpose('api')
             ->addChild('child_code')
         ;
 
@@ -31,6 +33,7 @@ class ItemTest extends TestCase
             ->setLabel('child_label')
             ->setType('child_type')
             ->setWeight(20)
+            ->setPurpose(null)
             ->addChild('child_code')
         ;
 
@@ -38,11 +41,13 @@ class ItemTest extends TestCase
         $this->assertSame('main_label', $main->getLabel());
         $this->assertSame('main_type', $main->getType());
         $this->assertSame(10, $main->getWeight());
+        $this->assertSame('api', $main->getPurpose());
 
         $this->assertSame('child_code', $child->getCode());
         $this->assertSame('child_label', $child->getLabel());
         $this->assertSame('child_type', $child->getType());
         $this->assertSame(20, $child->getWeight());
+        $this->assertNull($child->getPurpose());
 
         $this->assertSame([$child->getCode() => $child], $main->getChildren());
         $this->assertSame([$main->getCode() => $main, $child->getCode() => $child], Item::getAll());

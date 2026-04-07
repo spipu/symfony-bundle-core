@@ -7,6 +7,7 @@ namespace Spipu\CoreBundle\Tests\Unit\Service;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Spipu\CoreBundle\Model\MailHeader;
 use Spipu\CoreBundle\Service\MailManager;
 use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mailer\Exception\InvalidArgumentException;
@@ -165,5 +166,39 @@ class MailManagerTest extends TestCase
 
         $this->expectException(InvalidArgumentException::class);
         $service->prepareEmailAddresses($addresses);
+    }
+
+    public function testAddHeadersToMessage(): void
+    {
+        $twig   = $this->createMock(TwigEnvironment::class);
+        $mailer = $this->createMock(MailerInterface::class);
+
+        $service = new MailManager($mailer, $twig);
+
+        $message = new Email();
+        $headers = [
+            new MailHeader('X-Custom-One', 'value-one'),
+            new MailHeader('X-Custom-Two', 'value-two'),
+        ];
+
+        $service->addHeadersToMessage($message, $headers);
+
+        $this->assertSame('value-one', $message->getHeaders()->get('X-Custom-One')->getBodyAsString());
+        $this->assertSame('value-two', $message->getHeaders()->get('X-Custom-Two')->getBodyAsString());
+    }
+
+    public function testAddHeadersToMessageEmpty(): void
+    {
+        $twig   = $this->createMock(TwigEnvironment::class);
+        $mailer = $this->createMock(MailerInterface::class);
+
+        $service = new MailManager($mailer, $twig);
+
+        $message = new Email();
+        $headersBefore = $message->getHeaders()->toArray();
+
+        $service->addHeadersToMessage($message, []);
+
+        $this->assertSame($headersBefore, $message->getHeaders()->toArray());
     }
 }

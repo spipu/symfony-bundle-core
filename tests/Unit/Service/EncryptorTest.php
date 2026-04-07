@@ -70,4 +70,18 @@ class EncryptorTest extends TestCase
         $this->expectException(EncryptorException::class);
         $service->decrypt('my string');
     }
+
+    public function testServiceDecryptReturnsNullWithWrongKeyPair(): void
+    {
+        $keyPairA = (new Encryptor(''))->generateKeyPair();
+        $keyPairB = (new Encryptor(''))->generateKeyPair();
+
+        $serviceA = new Encryptor($keyPairA);
+        $serviceB = new Encryptor($keyPairB);
+
+        $encrypted = $serviceA->encrypt('my secret');
+        $result = $serviceB->decrypt($encrypted);
+
+        $this->assertNull($result);
+    }
 }
