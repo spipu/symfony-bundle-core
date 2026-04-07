@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Spipu\CoreBundle\Tests\Unit\Service;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Spipu\CoreBundle\Exception\AsynchronousCommandException;
 use Spipu\CoreBundle\Service\AsynchronousCommand;
@@ -12,6 +14,8 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Exception\RuntimeException;
 use Symfony\Component\Process\Process;
 
+#[AllowMockObjectsWithoutExpectations]
+#[CoversClass(AsynchronousCommand::class)]
 class AsynchronousCommandTest extends TestCase
 {
     public function testCreateDefaultValues(): void

@@ -286,7 +286,7 @@ class SymfonyMock extends TestCase
         $translator
             ->expects($testCase->any())
             ->method('trans')
-            ->will($testCase->returnArgument(0));
+            ->willReturnArgument(0);
 
         /** @var MockObject|TranslatorInterface $translator */
         return $translator;
@@ -848,7 +848,7 @@ class SymfonyMock extends TestCase
         $security = $testCase->createMock(Security::class);
 
         $security
-            ->expects($testCase::any())
+            ->expects($testCase->any())
             ->method('getUser')
             ->willReturn($user);
 

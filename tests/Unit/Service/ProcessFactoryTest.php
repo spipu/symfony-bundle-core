@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace Spipu\CoreBundle\Tests\Unit\Service;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Spipu\CoreBundle\Service\ProcessFactory;
 use Symfony\Component\Process\Process;
 
+#[AllowMockObjectsWithoutExpectations]
+#[CoversClass(ProcessFactory::class)]
 class ProcessFactoryTest extends TestCase
 {
     public function testService(): void

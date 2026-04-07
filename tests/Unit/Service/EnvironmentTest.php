@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace Spipu\CoreBundle\Tests\Unit\Service;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Spipu\CoreBundle\Service\Environment;
 
+#[AllowMockObjectsWithoutExpectations]
+#[CoversClass(Environment::class)]
 class EnvironmentTest extends TestCase
 {
     public function testServiceOk(): void

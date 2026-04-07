@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace Spipu\CoreBundle\Tests\Unit\Command;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Spipu\CoreBundle\Command\FixturesLoadCommand;
 use Spipu\CoreBundle\Fixture\ListFixture;
 use Spipu\CoreBundle\Tests\SymfonyMock;
 
+#[AllowMockObjectsWithoutExpectations]
+#[CoversClass(FixturesLoadCommand::class)]
 class FixturesLoadCommandTest extends TestCase
 {
     public function testLoad(): void

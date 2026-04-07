@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace Spipu\CoreBundle\Tests\Unit\Command;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Spipu\CoreBundle\Command\AssetsInstallCommand;
 use Spipu\CoreBundle\Service\Assets;
 use Spipu\CoreBundle\Tests\SymfonyMock;
 
+#[AllowMockObjectsWithoutExpectations]
+#[CoversClass(AssetsInstallCommand::class)]
 class AssetsInstallCommandTest extends TestCase
 {
     public function testLoad(): void

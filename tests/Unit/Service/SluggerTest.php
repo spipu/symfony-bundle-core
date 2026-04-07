@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace Spipu\CoreBundle\Tests\Unit\Service;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Spipu\CoreBundle\Service\Slugger;
 use Spipu\CoreBundle\Service\SluggerInterface;
 
+#[AllowMockObjectsWithoutExpectations]
+#[CoversClass(Slugger::class)]
 class SluggerTest extends TestCase
 {
     public function testServiceOk(): void

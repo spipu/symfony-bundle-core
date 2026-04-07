@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Spipu\CoreBundle\Tests\Unit\Service;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Spipu\CoreBundle\Assets\AssetInterface;
@@ -12,6 +14,8 @@ use Spipu\CoreBundle\Service\Assets;
 use Spipu\CoreBundle\Tests\SpipuCoreMock;
 use Spipu\CoreBundle\Tests\SymfonyMock;
 
+#[AllowMockObjectsWithoutExpectations]
+#[CoversClass(Assets::class)]
 class AssetsTest extends TestCase
 {
     public function testErrorNoTargetDir(): void

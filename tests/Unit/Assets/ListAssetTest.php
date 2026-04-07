@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace Spipu\CoreBundle\Tests\Unit\Assets;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Spipu\CoreBundle\Assets\AssetInterface;
 use Spipu\CoreBundle\Assets\ListAsset;
 
+#[AllowMockObjectsWithoutExpectations]
+#[CoversClass(ListAsset::class)]
 class ListAssetTest extends TestCase
 {
     public function testList(): void

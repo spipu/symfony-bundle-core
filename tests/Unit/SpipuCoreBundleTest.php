@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Spipu\CoreBundle\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Spipu\CoreBundle\RolesHierarchyBundleInterface;
 use Spipu\CoreBundle\Service\RoleDefinitionInterface;
@@ -11,6 +13,8 @@ use Spipu\CoreBundle\SpipuCoreBundle;
 use Spipu\CoreBundle\Tests\SymfonyMock;
 use Symfony\Component\DependencyInjection\Extension\ConfigurableExtensionInterface;
 
+#[AllowMockObjectsWithoutExpectations]
+#[CoversClass(SpipuCoreBundle::class)]
 class SpipuCoreBundleTest extends TestCase
 {
     public function testBase(): void

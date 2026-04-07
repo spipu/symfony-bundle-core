@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace Spipu\CoreBundle\Tests\Unit\Fixture;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Spipu\CoreBundle\Fixture\FixtureInterface;
 use Spipu\CoreBundle\Fixture\ListFixture;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AllowMockObjectsWithoutExpectations]
+#[CoversClass(ListFixture::class)]
 class ListFixtureTest extends TestCase
 {
     /**
@@ -19,48 +23,40 @@ class ListFixtureTest extends TestCase
     public function testLoad(): void
     {
         $outputMock = $this->createMock(OutputInterface::class);
-        $outputMock->expects($this->any())->method('writeln')->will(
-            $this->returnCallback(
+        $outputMock->expects($this->any())->method('writeln')->willReturnCallback(
                 function (mixed $text, int $options = 0): void {
                     $this->outputText .= $text . ',';
                 }
-            )
         );
 
         $fixtureA = $this->createMock(FixtureInterface::class);
         $fixtureA->expects($this->any())->method('getCode')->willReturn('test_a');
         $fixtureA->expects($this->any())->method('getOrder')->willReturn(10);
         $fixtureA->expects($this->never())->method('remove');
-        $fixtureA->expects($this->once())->method('load')->will(
-            $this->returnCallback(
+        $fixtureA->expects($this->once())->method('load')->willReturnCallback(
                 function (OutputInterface $output) {
                     $output->writeln('load_a');
                 }
-            )
         );
 
         $fixtureB = $this->createMock(FixtureInterface::class);
         $fixtureB->expects($this->any())->method('getCode')->willReturn('test_b');
         $fixtureB->expects($this->any())->method('getOrder')->willReturn(30);
         $fixtureB->expects($this->never())->method('remove');
-        $fixtureB->expects($this->once())->method('load')->will(
-            $this->returnCallback(
+        $fixtureB->expects($this->once())->method('load')->willReturnCallback(
                 function (OutputInterface $output) {
                     $output->writeln('load_b');
                 }
-            )
         );
 
         $fixtureC = $this->createMock(FixtureInterface::class);
         $fixtureC->expects($this->any())->method('getCode')->willReturn('test_c');
         $fixtureC->expects($this->any())->method('getOrder')->willReturn(20);
         $fixtureC->expects($this->never())->method('remove');
-        $fixtureC->expects($this->once())->method('load')->will(
-            $this->returnCallback(
+        $fixtureC->expects($this->once())->method('load')->willReturnCallback(
                 function (OutputInterface $output) {
                     $output->writeln('load_c');
                 }
-            )
         );
 
         $this->outputText = '';
@@ -82,48 +78,40 @@ class ListFixtureTest extends TestCase
     public function testRemove(): void
     {
         $outputMock = $this->createMock(OutputInterface::class);
-        $outputMock->expects($this->any())->method('writeln')->will(
-            $this->returnCallback(
+        $outputMock->expects($this->any())->method('writeln')->willReturnCallback(
                 function (mixed $text, int $options = 0): void {
                     $this->outputText .= $text . ',';
                 }
-            )
         );
 
         $fixtureA = $this->createMock(FixtureInterface::class);
         $fixtureA->expects($this->any())->method('getCode')->willReturn('test_a');
         $fixtureA->expects($this->any())->method('getOrder')->willReturn(10);
         $fixtureA->expects($this->never())->method('load');
-        $fixtureA->expects($this->once())->method('remove')->will(
-            $this->returnCallback(
+        $fixtureA->expects($this->once())->method('remove')->willReturnCallback(
                 function (OutputInterface $output) {
                     $output->writeln('remove_a');
                 }
-            )
         );
 
         $fixtureB = $this->createMock(FixtureInterface::class);
         $fixtureB->expects($this->any())->method('getCode')->willReturn('test_b');
         $fixtureB->expects($this->any())->method('getOrder')->willReturn(30);
         $fixtureB->expects($this->never())->method('load');
-        $fixtureB->expects($this->once())->method('remove')->will(
-            $this->returnCallback(
+        $fixtureB->expects($this->once())->method('remove')->willReturnCallback(
                 function (OutputInterface $output) {
                     $output->writeln('remove_b');
                 }
-            )
         );
 
         $fixtureC = $this->createMock(FixtureInterface::class);
         $fixtureC->expects($this->any())->method('getCode')->willReturn('test_c');
         $fixtureC->expects($this->any())->method('getOrder')->willReturn(20);
         $fixtureC->expects($this->never())->method('load');
-        $fixtureC->expects($this->once())->method('remove')->will(
-            $this->returnCallback(
+        $fixtureC->expects($this->once())->method('remove')->willReturnCallback(
                 function (OutputInterface $output) {
                     $output->writeln('remove_c');
                 }
-            )
         );
 
         $this->outputText = '';

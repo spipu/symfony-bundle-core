@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Spipu\CoreBundle\Tests\Unit\Service;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Spipu\CoreBundle\Service\MailManager;
 use Symfony\Component\Mailer\Envelope;
@@ -13,6 +15,8 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Twig\Environment as TwigEnvironment;
 
+#[AllowMockObjectsWithoutExpectations]
+#[CoversClass(MailManager::class)]
 class MailManagerTest extends TestCase
 {
     private function validateAddresses(array $expected, array $addresses): void
@@ -36,15 +40,13 @@ class MailManagerTest extends TestCase
         $mailer
             ->expects($this->once())
             ->method('send')
-            ->will(
-                $this->returnCallback(
+            ->willReturnCallback(
                     function (Email $email, ?Envelope $envelope = null) {
                         $this->validateAddresses(['from@test.fr'], $email->getFrom());
                         $this->validateAddresses(['to_1@test.fr', 'to_2@test.fr'], $email->getTo());
                         $this->assertSame('Subject', $email->getSubject());
                         $this->assertSame('Message', $email->getHtmlBody());
                     }
-                )
             );
 
         $service = new MailManager($mailer, $twig);
@@ -69,15 +71,13 @@ class MailManagerTest extends TestCase
         $mailer
             ->expects($this->once())
             ->method('send')
-            ->will(
-                $this->returnCallback(
+            ->willReturnCallback(
                     function (Email $email, ?Envelope $envelope = null) {
                         $this->validateAddresses(['from@test.fr'], $email->getFrom());
                         $this->validateAddresses(['to_1@test.fr', 'to_2@test.fr'], $email->getTo());
                         $this->assertSame('Subject', $email->getSubject());
                         $this->assertSame('From template', $email->getHtmlBody());
                     }
-                )
             );
 
         $service = new MailManager($mailer, $twig);

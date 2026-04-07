@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace Spipu\CoreBundle\Tests\Unit\Entity\Role;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Spipu\CoreBundle\Entity\Role\Item;
 
+#[AllowMockObjectsWithoutExpectations]
+#[CoversClass(Item::class)]
 class ItemTest extends TestCase
 {
     public function testEntity(): void
