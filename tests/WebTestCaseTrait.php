@@ -127,7 +127,7 @@ trait WebTestCaseTrait
     {
         $this->assertGreaterThan(
             0,
-            $crawler->filter('span.form-error-message:contains("' . $message . '")')->count()
+            $crawler->filter('div.invalid-feedback:contains("' . $message . '")')->count()
         );
     }
 
