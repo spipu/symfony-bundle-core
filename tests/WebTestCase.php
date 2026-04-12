@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Spipu\CoreBundle\Tests;
 
+use PHPUnit\Framework\Attributes\CoversNothing;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
+#[CoversNothing]
 class WebTestCase extends BaseWebTestCase
 {
     use WebTestCaseTrait;
