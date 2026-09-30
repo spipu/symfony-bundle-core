@@ -456,7 +456,7 @@ Inject `FinderFactory` instead of instantiating `Finder` directly so the factory
 
 Wraps DBAL identifier and value quoting behind a stable interface. Useful when building raw SQL queries from variable identifiers (table or column names) or values.
 
-The factory creates a `ConnectionQuoterInterface` bound to a specific `Doctrine\DBAL\Connection`. The quoter delegates identifier quoting to `AbstractPlatform::quoteSingleIdentifier()` (works across all DBAL 3.x and 4.x versions) and value quoting to `Connection::quote()`, with explicit type validation.
+The factory creates a `ConnectionQuoterInterface` bound to a specific `Doctrine\DBAL\Connection`. The quoter delegates identifier quoting to `AbstractPlatform::quoteSingleIdentifier()` and value quoting to `Connection::quote()`, with explicit type validation.
 
 **Service:** `Spipu\CoreBundle\Service\ConnectionQuoterFactoryInterface`
 
