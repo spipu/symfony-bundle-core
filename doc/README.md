@@ -25,7 +25,7 @@ The **CoreBundle** is the foundation of the Spipu bundle suite. It provides shar
 
 ## Requirements
 
-- PHP 8.1+
+- PHP 8.3+
 - Symfony 6.4+
 - `ext-sodium` (libsodium PHP extension)
 
