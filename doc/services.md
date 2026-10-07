@@ -62,15 +62,14 @@ class MyService
 | Method | Description |
 |--------|-------------|
 | `execute(string $command, array $parameters): bool` | Launch a command asynchronously (fire-and-forget) |
-| `create(string $command, array $parameters): Process` | Build the `Process` object without starting it |
 | `setDisableLog(bool $disableLog): self` | Disable output redirection to log file (output goes to `/dev/null`) |
 
 **Notes:**
 - String parameters are automatically shell-escaped with `escapeshellarg()`.
-- The command line is built as: `{phpBin} bin/console {command} {parameters} >> {logsDir}/{logFilename} 2>&1`
+- The command line is built as: `{phpBin} bin/console {command} {parameters} >> {logsDir}/{logFilename} 2>&1 < /dev/null &`
 - Each call also appends a timestamped entry to the log file before starting the process.
-- `execute()` sets the `create_new_console` process option so the child process outlives the PHP request.
-- `execute()` throws `AsynchronousCommandException` if the OS cannot launch a new process.
+- `execute()` runs the command line in background (`... < /dev/null &`) through a shell that ends immediately and is waited for: the command outlives the PHP request, is adopted by `init` and reaped at its end, so no zombie process remains under the caller (PHP-FPM worker for example).
+- `execute()` throws `AsynchronousCommandException` if the OS cannot launch a new process, or if the shell itself fails to fork the command. A failure of the command itself (missing PHP binary, unwritable log file, ...) happens in the background job and is not detected: `execute()` returns `true`, and the task must be caught up later (the ProcessBundle cron does it for waiting tasks).
 
 ---
 

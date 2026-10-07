@@ -60,7 +60,7 @@ class AsynchronousCommand
         return $this;
     }
 
-    public function create(string $command, array $parameters): Process
+    private function create(string $command, array $parameters): Process
     {
         // Escape parameters.
         foreach ($parameters as &$parameter) {
@@ -79,7 +79,7 @@ class AsynchronousCommand
         $logFile = '/dev/null';
         if (!$this->disableLog) {
             $logFile = $this->logsDir . DIRECTORY_SEPARATOR . $this->logFilename;
-            $content = '[' . date('Y-m-d H:i:d') . '] ' . implode(' ', $cmd) . "\n";
+            $content = '[' . date('Y-m-d H:i:s') . '] ' . implode(' ', $cmd) . "\n";
 
             $this->filesystem->appendToFile($logFile, $content);
         }
@@ -88,26 +88,38 @@ class AsynchronousCommand
         $cmd[] = '>> ' . $logFile;
         $cmd[] = '2>&1';
 
-        // Launch the process.
+        // Launch in background, detached from the standard input.
+        $cmd[] = '< /dev/null';
+        $cmd[] = '&';
+
         return $this->processFactory->create(
             implode(' ', $cmd),
             $this->projectDir . DIRECTORY_SEPARATOR
         );
     }
 
+    /**
+     * The command is launched in background by a shell that ends immediately, and that is waited for.
+     * The command is then adopted by init, that reaps it at its end: no zombie process remains in the caller.
+     */
     public function execute(string $command, array $parameters): bool
     {
         $process = $this->create($command, $parameters);
-        $process->setOptions(['create_new_console' => true]);
         $process->setEnv($this->buildRequestEnvOverride());
         try {
-            $process->start();
+            $exitCode = $process->run();
         } catch (RuntimeException $e) {
             if ($e->getMessage() === 'Unable to launch a new process.') {
                 throw new AsynchronousCommandException($e->getMessage());
             }
 
             throw $e;
+        }
+
+        if ($exitCode !== 0) {
+            throw new AsynchronousCommandException(
+                'Unable to launch the asynchronous command - Exit code ' . $exitCode
+            );
         }
 
         return true;
