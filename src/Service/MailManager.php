@@ -90,8 +90,18 @@ class MailManager
             ->to(...$receiverAddresses)
             ->priority(Email::PRIORITY_HIGH)
             ->subject($subject)
-            ->text(strip_tags($body))
+            ->text($this->convertHtmlToText($body))
             ->html($body);
+    }
+
+    /**
+     * The head and style blocks are removed with their content, and the entities escaped by Twig are decoded.
+     */
+    private function convertHtmlToText(string $html): string
+    {
+        $text = (string) preg_replace('{<(head|style)\b.*?</\1>}is', '', $html);
+
+        return html_entity_decode(strip_tags($text), ENT_QUOTES | ENT_HTML5, 'UTF-8');
     }
 
     public function prepareEmailAddresses(mixed $values): array

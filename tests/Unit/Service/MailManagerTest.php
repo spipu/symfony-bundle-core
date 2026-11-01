@@ -90,6 +90,26 @@ class MailManagerTest extends TestCase
         );
     }
 
+    public function testSendHtmlTextPart(): void
+    {
+        $html = '<html><head><title>Title</title><style>p { color: red; }</style></head>'
+            . '<body><p>L&#039;&eacute;cole &amp; &lt;b&gt; &quot;quoted&quot;</p></body></html>';
+
+        $mailer = $this->createMock(MailerInterface::class);
+        $mailer
+            ->expects($this->once())
+            ->method('send')
+            ->willReturnCallback(
+                function (Email $email, ?Envelope $envelope = null) use ($html) {
+                    $this->assertSame('L\'école & <b> "quoted"', $email->getTextBody());
+                    $this->assertSame($html, $email->getHtmlBody());
+                }
+            );
+
+        $service = new MailManager($mailer, $this->createMock(TwigEnvironment::class));
+        $service->sendHtmlMail('Subject', 'from@test.fr', 'to@test.fr', $html);
+    }
+
     public function testPrepareAddressesOk(): void
     {
         $address1 = new Address('test1@test.fr');
